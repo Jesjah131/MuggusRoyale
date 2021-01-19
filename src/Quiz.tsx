@@ -38,8 +38,6 @@ export const Quiz = () => {
     setMessage(msg);
   };
 
-  
-
 
   const init = () => {
     console.log("init");

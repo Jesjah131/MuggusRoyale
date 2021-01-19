@@ -1,3 +1,4 @@
+
 (function () {
   function Emitter(obj) {
     if (obj) return mixin(obj);
@@ -150,7 +151,7 @@
   Emitter.prototype.hasListeners = function (event) {
     return !!this.listeners(event).length;
   };
-  var JS_WS_CLIENT_TYPE = 'js-websocket';
+  var JS_WS_CLIENT_TYPE = 'js-web';
   var JS_WS_CLIENT_VERSION = '0.0.1';
 
   var Protocol = window.Protocol;
@@ -256,6 +257,7 @@
     connect(params, url, cb);
   };
 
+
   var defaultDecode = (starx.decode = function (data) {
     var msg = Message.decode(data);
 
@@ -291,7 +293,7 @@
   });
 
   var connect = function (params, url, cb) {
-    console.log('connect to ' + url);
+    console.log('connect to en liten kuk' + url);
 
     var params = params || {};
     var maxReconnectAttempts =
@@ -576,6 +578,8 @@
       }
     }
 
-    window.starx = starx;
+    global.starx = starx;
   };
 })();
+
+module.exports = starx;
