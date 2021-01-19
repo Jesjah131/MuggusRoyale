@@ -15,6 +15,9 @@ Follow the [Environment Setup Guide](https://reactnative.dev/docs/environment-se
 npm run android
 ```
 
+#### Clean
+```npm run clean-android```
+
 ### iOS
 
 Install XCode, the CLI tools when prompted and [CocoaPods](https://cocoapods.org). 
@@ -25,6 +28,10 @@ pod install
 cd ..
 npm run ios
 ```
+
+#### Clean
+```npm run clean-ios```
+
 
 ### Problem
 Fick något jävla permissionskit med Android-mappen efter ett tag. Denna stackoverflowlösning hjälpte mig (antar att det bara gäller UNIX-baserat):
