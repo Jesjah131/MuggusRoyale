@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
-import { Quiz } from './socketConnector.js';
+import {View, Text, StyleSheet, Button} from 'react-native';
+import {Quiz} from '../socketConnector.js';
 
 const styles = StyleSheet.create({
   container: {
@@ -21,11 +21,11 @@ const styles = StyleSheet.create({
 
 /* From: https://github.com/typescript-cheatsheets/react#reacttypescript-cheatsheets
 
+Functional component with props:
 type AppProps = { message: string }; - could also use interface
 const App = ({ message }: AppProps) => <div>{message}</div>;
 
 */
-
 
 export interface ContainerProps {
   children: any;
@@ -40,11 +40,11 @@ export interface ProfileProps {
   profileName: string;
 }
 
-export interface QuizProps {
+export interface QuizProps {}
 
-}
-
-const ScreenContainer = ({children }: ContainerProps ) => <View style={styles.container}>{children}</View>;
+const ScreenContainer = ({children}: ContainerProps) => (
+  <View style={styles.container}>{children}</View>
+);
 
 export const Home: React.FC<HomeProps> = (props) => {
   return (
@@ -52,7 +52,7 @@ export const Home: React.FC<HomeProps> = (props) => {
       <Text>Muggus Quiz</Text>
       <Button title="Join" onPress={() => props.navigation.push('Quiz')} />
     </ScreenContainer>
-  )
+  );
 };
 
 export const QuizScreen: React.FC<QuizProps> = () => {
@@ -60,13 +60,13 @@ export const QuizScreen: React.FC<QuizProps> = () => {
     <ScreenContainer>
       <Quiz></Quiz>
     </ScreenContainer>
-  )
+  );
 };
 
 export const Profile: React.FC<ProfileProps> = (props) => {
-  return (  
+  return (
     <ScreenContainer>
       <Text>{props.profileName}</Text>
-    </ScreenContainer>     
-  ) 
+    </ScreenContainer>
+  );
 };

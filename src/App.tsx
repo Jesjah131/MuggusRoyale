@@ -3,8 +3,8 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {QuizScreen, Profile, Home} from './screens';
-import './protocol.js';
-import './starx-wsclient.js';
+import '../protocol';
+import '../starx-wsclient';
 
 const App = () => {
   const Tabs = createBottomTabNavigator();
