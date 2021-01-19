@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {QuizScreen, Profile, Home} from './screens.js';
+import {QuizScreen, Profile, Home} from './screens';
 import './protocol.js';
 import './starx-wsclient.js';
 
