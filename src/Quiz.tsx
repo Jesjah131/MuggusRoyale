@@ -2,7 +2,17 @@ import React, {useState, useEffect} from 'react';
 import {TouchableOpacity, View, Text} from 'react-native';
 import '../protocol';
 import * as Starx from '../starx-wsclient';
+import { ScreenContainer } from './ScreenContainer';
 
+export interface QuizProps {}
+
+export const QuizScreen: React.FC<QuizProps> = () => {
+  return (
+    <ScreenContainer>
+      <Quiz></Quiz>
+    </ScreenContainer>
+  );
+};
 
 
 interface JoinData {
