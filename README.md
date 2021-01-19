@@ -1,7 +1,13 @@
 # MUGGUS ROYALE
 Ett helt otroligt quizspel. 
 
-## Android
+## Environment Setup
+```
+cd ProjektMapp
+npm install
+```
+
+### Android
 
 Follow the [Environment Setup Guide](https://reactnative.dev/docs/environment-setup).
 
@@ -9,7 +15,7 @@ Follow the [Environment Setup Guide](https://reactnative.dev/docs/environment-se
 npm run android
 ```
 
-## iOS
+### iOS
 
 Install XCode, the CLI tools when prompted and [CocoaPods](https://cocoapods.org). 
 
