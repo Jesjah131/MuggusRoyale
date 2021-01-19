@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, Text, StyleSheet, Button} from 'react-native';
-import {Quiz} from '../socketConnector.js';
+import {Quiz} from './Quiz';
 
 const styles = StyleSheet.create({
   container: {
