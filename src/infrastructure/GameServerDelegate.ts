@@ -1,3 +1,6 @@
+export {}
+/* Removing when trying the other approach
+
 // DTO with appropriate information about joining players
 export type PlayerJoinedData = {
     info: string
@@ -67,3 +70,4 @@ export class ServerFactory {
         return new MockGameServer(delegate);
     }
 }
+*/

@@ -293,7 +293,7 @@
   });
 
   var connect = function (params, url, cb) {
-    console.log('connect to en liten kuk' + url);
+    console.log('connect to ' + url);
 
     var params = params || {};
     var maxReconnectAttempts =
