@@ -581,7 +581,11 @@
       }
     }
 
-    global.starx = starx;
+
+
+    globalThis.starx = starx;
+
+    //global.starx = starx;
   };
 })();
 

@@ -2,12 +2,14 @@ import { SubEvent } from "sub-events";
 import { GameServer } from "./GameServer";
 import { MatchJoinedData, MatchStartingData, MatchWaitingToStartData } from "./GameServerEventData";
 
+
 export class NanoGameServer implements GameServer {
     OnMatchJoined: SubEvent<MatchJoinedData> = new SubEvent();
     OnMatchStarting: SubEvent<MatchStartingData> = new SubEvent();
     OnMatchWaitingToStart: SubEvent<MatchWaitingToStartData> = new SubEvent();
 
-    private Starx: any = global.starx;
+    
+    private Starx: any = globalThis.starx;
 
     Init(): void {
         try {      
