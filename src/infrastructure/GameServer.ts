@@ -10,16 +10,34 @@ import {
   MatchJoinedData,
 } from './GameServerEventData';
 
-// The interface for game server
+/**
+ * The interface for game server
+ */
 export interface GameServer {
+  /**
+   * Event fired when joined match
+   */
   OnMatchJoined: SubEvent<MatchJoinedData>;
+
+  /**
+   * Event fired when waiting for match to start (each time a new player joins?)
+   */
   OnMatchWaitingToStart: SubEvent<MatchWaitingToStartData>;
+
+  /**
+   * Event fired when match starting
+   */
   OnMatchStarting: SubEvent<MatchStartingData>;
 
-  // Initialize connection to server
-  // ToDo: Do this in constructor?
+  /**
+   * Initialize connection to server
+   * @remarks
+   * Do this in constructor?
+   */
   Init(): void;
 
-  // Ask to join a server
+  /**
+   * Ask to join a server
+   */
   RequestJoin(): void;
 }
