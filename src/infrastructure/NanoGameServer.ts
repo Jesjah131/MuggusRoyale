@@ -1,53 +1,53 @@
-import {SubEvent} from 'sub-events';
-import {GameServer} from './GameServer';
-import {
-  MatchJoinedData,
-  MatchStartingData,
-  MatchWaitingToStartData,
-} from './GameServerEventData';
+import { SubEvent } from "sub-events";
+import { GameServer } from "./GameServer";
+import { MatchJoinedData, MatchStartingData, MatchWaitingToStartData } from "./GameServerEventData";
 
 /**
- * An implementation communicating with Calle's Nano Web Server
+ * An implementation communicating with Calle's Nano Web Server 
  */
 export class NanoGameServer implements GameServer {
-  OnMatchJoined: SubEvent<MatchJoinedData> = new SubEvent();
-  OnMatchStarting: SubEvent<MatchStartingData> = new SubEvent();
-  OnMatchWaitingToStart: SubEvent<MatchWaitingToStartData> = new SubEvent();
+    OnMatchJoined: SubEvent<MatchJoinedData> = new SubEvent();
+    OnMatchStarting: SubEvent<MatchStartingData> = new SubEvent();
+    OnMatchWaitingToStart: SubEvent<MatchWaitingToStartData> = new SubEvent();
 
-  private Starx: any = globalThis.starx;
 
-  // Todo: Take IP as parameter? Port as well?
-  Init(ip: string = ''): void {
-    try {
-      this.Starx.init(
-        // web- 127.0.0.1
-        // android - 192.168.0.105 (or whatever your local IP is)
-        {host: '192.168.1.4', port: 3250, path: '/nano'},
-        () => {
-          // Event
-          this.Starx.on(
-            'onMatchWaitingToStart',
-            (data: MatchWaitingToStartData) => {
-              this.OnMatchWaitingToStart.emit(data);
-            },
-          );
+    private Starx: any = globalThis.starx;
 
-          // Event
-          this.Starx.on('onMatchStarting', (data: MatchStartingData) => {
-            this.OnMatchStarting.emit(data);
-          });
-        },
-      );
-    } catch (error) {
-      console.log('Error: ' + error);
+    // Take IP as parameter? Port as well?
+    Init(ip: string = ""): void {
+        try {      
+            this.Starx.init(
+              
+              // web- 127.0.0.1
+              // android - 192.168.0.105 (or whatever your local IP is)
+              {host: '192.168.1.4', port: 3250, path: '/nano'},
+              () => {
+                
+                // Event
+                this.Starx.on('onMatchWaitingToStart', (data: MatchWaitingToStartData) => {
+                    this.OnMatchWaitingToStart.emit(data);
+                    console.log("NANOGAMESERVER: Match waiting to start:" + data);                  
+                });
+
+                // Event
+                this.Starx.on('onMatchStarting', (data: MatchStartingData) => {
+                  this.OnMatchStarting.emit(data);
+                    console.log("NANOGAMESERVER: Match starting! " + data);                  
+                });
+                
+              },
+            );
+          } catch (error) {
+            console.log("Error: " + error);
+          }
     }
-  }
 
-  RequestJoin(): void {
-    try {
-      this.Starx.request('match.queue', {}, (data: MatchJoinedData) => {
-        this.OnMatchJoined.emit(data);
-      });
-    } catch (error) {}
-  }
+    RequestJoin(): void {
+        try {
+            this.Starx.request('match.queue', {}, (data: MatchJoinedData) => {
+                this.OnMatchJoined.emit(data);
+            });
+          } catch (error) {}
+    }
+
 }
