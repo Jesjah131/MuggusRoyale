@@ -1,8 +1,14 @@
 import React, {useState, useEffect} from 'react';
 import {TouchableOpacity, View, Text} from 'react-native';
 import '../protocol';
-import * as Starx from '../starx-wsclient';
-import { ScreenContainer } from './ScreenContainer';
+import {GameServer} from './infrastructure/GameServer';
+import {
+  MatchJoinedData,
+  MatchStartingData,
+  MatchWaitingToStartData,
+} from './infrastructure/GameServerEventData';
+import {ServerFactory} from './infrastructure/ServerFactory';
+import {ScreenContainer} from './ScreenContainer';
 
 export interface QuizProps {}
 
@@ -14,29 +20,34 @@ export const QuizScreen: React.FC<QuizProps> = () => {
   );
 };
 
-
-interface JoinData {
-  matchId: string;
-  matchAvailable: boolean;
-}
-
-interface MatchWaitingToStartData {
-  playersInMatch: number;
-}
-
-interface MatchStartingData {
-
-}
-
 export const Quiz = () => {
   const [message, setMessage] = useState<string[]>([]);
-  const [content, setContent] = useState<string>("null");
-  const [joined, setJoined] = useState<string>("");
-  const [connected, setConnected] = useState("");
+  const [content, setContent] = useState<string>('null');
+  const [joined, setJoined] = useState<string>('');
+  const [connected, setConnected] = useState('');
   const [title, setTitle] = useState(true);
   const [joinButton, setJoinButton] = useState(true);
 
-  const join = (data: JoinData) => {
+  const GameServer: GameServer = ServerFactory.GetServer();
+
+  // Subscribe to events
+  GameServer.OnMatchJoined.subscribe((data: MatchJoinedData) => {
+    join(data);
+  });
+
+  GameServer.OnMatchStarting.subscribe((data: MatchStartingData) => {
+    console.log(data);
+    setContent('MATCH IS STARTING');
+  });
+
+  GameServer.OnMatchWaitingToStart.subscribe(
+    (data: MatchWaitingToStartData) => {
+      console.log('Match waiting to start:' + data);
+      setConnected('Players connected to match: ' + data.playersInMatch);
+    },
+  );
+
+  const join = (data: MatchJoinedData) => {
     console.log(data);
     if (data.matchAvailable === false) {
     }
@@ -48,36 +59,8 @@ export const Quiz = () => {
     setMessage(msg);
   };
 
-
   const init = () => {
-    console.log("init");
-    try {
-      
-      global.starx.init(
-        
-        // web- 127.0.0.1
-        // android - 192.168.0.105
-        {host: '192.168.1.4', port: 3250, path: '/nano'},
-        () => {
-          
-          //console.log("Starx?" + starx);
-          global.starx.on('onMatchWaitingToStart', (data: MatchWaitingToStartData) => {
-            console.log("Match waiting to start:" + data);
-            setConnected('Players connected to match: ' + data.playersInMatch);
-          });
-          global.starx.on('onMatchStarting', (data: MatchStartingData) => {
-            console.log(data);
-            setContent('MATCH IS STARTING');
-          });
-          console.log("Skit ner dig")
-        },
-      );
-    } catch (error) {
-      console.log("Error: " + error);
-    }
-
-    
-
+    GameServer.Init();
   };
 
   useEffect(() => {
@@ -89,12 +72,11 @@ export const Quiz = () => {
     setTitle(false);
     console.log('queueingForGame');
     try {
-      global.starx.request('match.queue', {}, join);
+      GameServer.RequestJoin();
     } catch (error) {}
   };
 
   return (
-    
     <View>
       <TouchableOpacity onPress={queueGame}>
         {joinButton && <Text>Börja</Text>}
@@ -103,6 +85,5 @@ export const Quiz = () => {
       <Text>{content}</Text>
       <Text>{joined}</Text>
     </View>
- 
   );
 };

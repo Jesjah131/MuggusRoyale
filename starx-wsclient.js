@@ -1,4 +1,3 @@
-
 (function () {
   function Emitter(obj) {
     if (obj) return mixin(obj);
@@ -257,7 +256,6 @@
     connect(params, url, cb);
   };
 
-
   var defaultDecode = (starx.decode = function (data) {
     var msg = Message.decode(data);
 
@@ -293,7 +291,7 @@
   });
 
   var connect = function (params, url, cb) {
-    console.log('connect to en liten kuk' + url);
+    console.log('connect to ' + url);
 
     var params = params || {};
     var maxReconnectAttempts =
@@ -409,7 +407,12 @@
   };
 
   var send = function (packet) {
-    socket.send(packet.buffer);
+    // TODO: PROPER ERROR HANDLING, this merely silents the INVALID_STATE_ERR
+    try {
+      socket.send(packet.buffer);
+    } catch {
+      // DO SOMETHING?!
+    }
   };
 
   var handler = {};
@@ -578,7 +581,11 @@
       }
     }
 
-    global.starx = starx;
+
+
+    globalThis.starx = starx;
+
+    //global.starx = starx;
   };
 })();
 
