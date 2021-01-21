@@ -6,6 +6,7 @@ import {
   MatchJoinedData,
   MatchStartingData,
   MatchWaitingToStartData,
+  Close,
 } from './infrastructure/GameServerEventData';
 import {ServerFactory} from './infrastructure/ServerFactory';
 import {ScreenContainer} from './ScreenContainer';
@@ -27,6 +28,7 @@ export const Quiz = () => {
   const [connected, setConnected] = useState('');
   const [title, setTitle] = useState(true);
   const [joinButton, setJoinButton] = useState(true);
+  const [trusted, setTrusted] = useState(true);
 
   const GameServer: GameServer = ServerFactory.GetServer();
 
@@ -47,16 +49,18 @@ export const Quiz = () => {
     },
   );
 
+  GameServer.OnClose.subscribe((event: Close) => {
+    if(event.isTrusted === false){
+      setTrusted(false);
+    }
+  });
+
   const join = (data: MatchJoinedData) => {
     console.log(data);
     if (data.matchAvailable === false) {
     }
     setJoined('You joined match: ' + data.matchId);
     setContent('Waiting for more players...');
-  };
-
-  const onMessage = (msg: string[]) => {
-    setMessage(msg);
   };
 
   const init = () => {
@@ -81,8 +85,10 @@ export const Quiz = () => {
       <TouchableOpacity onPress={queueGame}>
         {joinButton && <Text>Börja</Text>}
       </TouchableOpacity>
-      <Text>{connected}</Text>
+      <Text>{message}</Text>
+      <Text>{trusted ? "jag är öppen!!" : "jag är inte längre öppen!!"}</Text>
       <Text>{content}</Text>
+      <Text>{connected}</Text>
       <Text>{joined}</Text>
     </View>
   );

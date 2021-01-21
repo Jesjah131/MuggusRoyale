@@ -1,6 +1,6 @@
 import { SubEvent } from "sub-events";
 import { GameServer } from "./GameServer";
-import { MatchJoinedData, MatchStartingData, MatchWaitingToStartData } from "./GameServerEventData";
+import { MatchJoinedData, MatchStartingData, MatchWaitingToStartData, Close } from "./GameServerEventData";
 
 /**
  * An implementation communicating with Calle's Nano Web Server 
@@ -9,6 +9,7 @@ export class NanoGameServer implements GameServer {
     OnMatchJoined: SubEvent<MatchJoinedData> = new SubEvent();
     OnMatchStarting: SubEvent<MatchStartingData> = new SubEvent();
     OnMatchWaitingToStart: SubEvent<MatchWaitingToStartData> = new SubEvent();
+    OnClose: SubEvent<Close> = new SubEvent();
 
 
     private Starx: any = globalThis.starx;
@@ -20,7 +21,7 @@ export class NanoGameServer implements GameServer {
               
               // web- 127.0.0.1
               // android - 192.168.0.105 (or whatever your local IP is)
-              {host: '192.168.1.4', port: 3250, path: '/nano'},
+              {host: '192.168.0.105', port: 3250, path: '/nano'},
               () => {
                 
                 // Event
@@ -34,7 +35,12 @@ export class NanoGameServer implements GameServer {
                   this.OnMatchStarting.emit(data);
                     console.log("NANOGAMESERVER: Match starting! " + data);                  
                 });
-                
+
+                // Event
+                this.Starx.on('io-error', (event: Close) => {
+                  this.OnClose.emit(event);
+                    console.log("NANOGAMESERVER: Closing! " + event);                  
+                });
               },
             );
           } catch (error) {

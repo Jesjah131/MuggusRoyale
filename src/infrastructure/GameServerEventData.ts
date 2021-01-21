@@ -19,3 +19,11 @@ export interface MatchJoinedData {
     matchId: string,
     matchAvailable: boolean
 }
+
+/**
+ * DTO for io-errors
+ */
+export interface Close {
+    isTrusted: boolean;
+    message: string;
+}

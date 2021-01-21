@@ -1,3 +1,4 @@
+
 /* 
     Using SubEvent (https://github.com/vitaly-t/sub-events) to trigger events 
 
@@ -5,6 +6,7 @@
 */
 import {SubEvent} from 'sub-events';
 import {
+  Close,
   MatchWaitingToStartData,
   MatchStartingData,
   MatchJoinedData,
@@ -28,6 +30,11 @@ export interface GameServer {
    * Event fired when match starting
    */
   OnMatchStarting: SubEvent<MatchStartingData>;
+
+  /**
+   * Event fired on socket error or closing (io-error)
+   */
+  OnClose: SubEvent<Close>;
 
   /**
    * Initialize connection to server
