@@ -8,7 +8,7 @@ export interface ProfileProps {
   }
 
   
-export const Profile: React.FC<ProfileProps> = (props) => {
+export const Profile = (props: ProfileProps) => {
     return (
       <ScreenContainer>
         <Text>{props.profileName}</Text>

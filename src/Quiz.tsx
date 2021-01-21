@@ -12,7 +12,7 @@ import {ScreenContainer} from './ScreenContainer';
 
 export interface QuizProps {}
 
-export const QuizScreen: React.FC<QuizProps> = () => {
+export const QuizScreen = (props: QuizProps) => {
   return (
     <ScreenContainer>
       <Quiz></Quiz>

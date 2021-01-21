@@ -6,7 +6,7 @@ export interface HomeProps {
     navigation: any;
   }
 
-export const Home: React.FC<HomeProps> = (props) => {
+export const Home = (props: HomeProps) => {
     return (
       <ScreenContainer>
         <Text>Muggus Quiz</Text>
