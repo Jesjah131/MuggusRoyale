@@ -6,6 +6,8 @@ import {
   MatchJoinedData,
   MatchStartingData,
   MatchWaitingToStartData,
+  Close,
+  Error,
 } from './infrastructure/GameServerEventData';
 import {ServerFactory} from './infrastructure/ServerFactory';
 import {ScreenContainer} from './ScreenContainer';
@@ -25,8 +27,9 @@ export const Quiz = () => {
   const [content, setContent] = useState<string>('null');
   const [joined, setJoined] = useState<string>('');
   const [connected, setConnected] = useState('');
-  const [title, setTitle] = useState(true);
   const [joinButton, setJoinButton] = useState(true);
+  const [trusted, setTrusted] = useState(true);
+  const [errorCode, setErrorCode] = useState<number>(0);
 
   const GameServer: GameServer = ServerFactory.GetServer();
 
@@ -47,16 +50,27 @@ export const Quiz = () => {
     },
   );
 
+  GameServer.OnClose.subscribe((event: Close) => {
+    if (!event.isTrusted && event.code == 1000) {
+      setTrusted(false);
+      setErrorCode(event.code);
+    }
+  });
+
+  GameServer.OnError.subscribe((event: Error) => {
+    if (!event.isTrusted) {
+      setTrusted(false);
+      // error - lets disconnect from server
+      disconnect();
+    }
+  });
+
   const join = (data: MatchJoinedData) => {
     console.log(data);
     if (data.matchAvailable === false) {
     }
     setJoined('You joined match: ' + data.matchId);
     setContent('Waiting for more players...');
-  };
-
-  const onMessage = (msg: string[]) => {
-    setMessage(msg);
   };
 
   const init = () => {
@@ -69,10 +83,15 @@ export const Quiz = () => {
 
   const queueGame = () => {
     setJoinButton(false);
-    setTitle(false);
     console.log('queueingForGame');
     try {
       GameServer.RequestJoin();
+    } catch (error) {}
+  };
+
+  const disconnect = () => {
+    try {
+      GameServer.Disconnect();
     } catch (error) {}
   };
 
@@ -81,8 +100,11 @@ export const Quiz = () => {
       <TouchableOpacity onPress={queueGame}>
         {joinButton && <Text>Börja</Text>}
       </TouchableOpacity>
-      <Text>{connected}</Text>
+      <Text>{message}</Text>
+      <Text>{trusted ? 'jag är öppen!!' : 'jag är inte längre öppen!! '}</Text>
+      <Text>{`Close reason: ${errorCode}`}</Text>
       <Text>{content}</Text>
+      <Text>{connected}</Text>
       <Text>{joined}</Text>
     </View>
   );

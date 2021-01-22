@@ -5,6 +5,8 @@
 */
 import {SubEvent} from 'sub-events';
 import {
+  Error,
+  Close,
   MatchWaitingToStartData,
   MatchStartingData,
   MatchJoinedData,
@@ -30,6 +32,16 @@ export interface GameServer {
   OnMatchStarting: SubEvent<MatchStartingData>;
 
   /**
+   * Event fired on socket closing
+   */
+  OnClose: SubEvent<Close>;
+
+  /**
+   * Event fired on socket error (io-error)
+   */
+  OnError: SubEvent<Error>;
+
+  /**
    * Initialize connection to server
    * @remarks
    * Do this in constructor?
@@ -40,4 +52,9 @@ export interface GameServer {
    * Ask to join a server
    */
   RequestJoin(): void;
+
+  /**
+   * Ask to disconnect from server
+   */
+  Disconnect(): void;
 }
