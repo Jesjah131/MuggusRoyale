@@ -1,6 +1,8 @@
+import { StackNavigationProp } from '@react-navigation/stack';
 import React, {useState, useEffect} from 'react';
 import {TouchableOpacity, View, Text} from 'react-native';
 import '../protocol';
+import { RootStackParamList } from './App';
 import {GameServer} from './infrastructure/GameServer';
 import {
   MatchJoinedData,
@@ -12,6 +14,11 @@ import {ScreenContainer} from './ScreenContainer';
 
 export interface QuizProps {}
 
+type QuizScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  'Quiz'
+  >;
+
 export const QuizScreen = (props: QuizProps) => {
   return (
     <ScreenContainer>
@@ -21,9 +28,9 @@ export const QuizScreen = (props: QuizProps) => {
 };
 
 export const Quiz = () => {
-  const [message, setMessage] = useState<string[]>([]);
-  const [content, setContent] = useState<string>('null');
-  const [joined, setJoined] = useState<string>('');
+  const [message, setMessage] = useState(['']);
+  const [content, setContent] = useState('');
+  const [joined, setJoined] = useState('');
   const [connected, setConnected] = useState('');
   const [title, setTitle] = useState(true);
   const [joinButton, setJoinButton] = useState(true);

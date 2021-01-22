@@ -1,16 +1,24 @@
 import React from 'react';
 import { ScreenContainer } from './ScreenContainer';
 import {View, Text, StyleSheet, Button} from 'react-native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from './App';
 
-export interface HomeProps {
-    navigation: any;
+type HomeScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  'Home'
+  >;
+
+  type Props = {
+    navigation: HomeScreenNavigationProp;
   }
 
-export const Home = (props: HomeProps) => {
+
+export const Home = ({ navigation }: Props) => {
     return (
       <ScreenContainer>
         <Text>Muggus Quiz</Text>
-        <Button title="Join" onPress={() => props.navigation.push('Quiz')} />
+        <Button title="Join" onPress={() => navigation.navigate('Quiz')} />
       </ScreenContainer>
     );
   };
