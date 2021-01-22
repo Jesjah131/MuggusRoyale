@@ -13,8 +13,12 @@ type HomeScreenNavigationProp = StackNavigationProp<
     navigation: HomeScreenNavigationProp;
   }
 
+<<<<<<< HEAD
 
 export const Home = ({ navigation }: Props) => {
+=======
+export const Home = (props: HomeProps) => {
+>>>>>>> master
     return (
       <ScreenContainer>
         <Text>Muggus Quiz</Text>
