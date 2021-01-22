@@ -1,28 +1,22 @@
 import React from 'react';
-import { ScreenContainer } from './ScreenContainer';
+import {ScreenContainer} from './ScreenContainer';
 import {View, Text, StyleSheet, Button} from 'react-native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from './App';
+import {StackNavigationProp} from '@react-navigation/stack';
+import { ServerFactory } from './infrastructure/ServerFactory';
+import { HomeScreenNavigationProp, QuizProps, RootStackParamList } from './navigation/types';
 
-type HomeScreenNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  'Home'
-  >;
+type Props = {
+  navigation: HomeScreenNavigationProp;
+};
 
-  type Props = {
-    navigation: HomeScreenNavigationProp;
-  }
+export const Home = ({navigation}: Props) => {
 
-<<<<<<< HEAD
+  var quizProps: QuizProps = { navigation: navigation, server: ServerFactory.GetServer() }
 
-export const Home = ({ navigation }: Props) => {
-=======
-export const Home = (props: HomeProps) => {
->>>>>>> master
-    return (
-      <ScreenContainer>
-        <Text>Muggus Quiz</Text>
-        <Button title="Join" onPress={() => navigation.navigate('Quiz')} />
-      </ScreenContainer>
-    );
-  };
+  return (
+    <ScreenContainer>
+      <Text>Muggus Quiz</Text>
+      <Button title="Join" onPress={() => navigation.navigate('Quiz')} />
+    </ScreenContainer>
+  );
+};

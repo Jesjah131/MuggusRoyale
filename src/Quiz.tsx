@@ -1,37 +1,27 @@
-import { StackNavigationProp } from '@react-navigation/stack';
 import React, {useState, useEffect} from 'react';
 import {TouchableOpacity, View, Text} from 'react-native';
 import '../protocol';
-<<<<<<< HEAD
-import { RootStackParamList } from './App';
-=======
->>>>>>> master
 import {GameServer} from './infrastructure/GameServer';
 import {
   MatchJoinedData,
   MatchStartingData,
   MatchWaitingToStartData,
-<<<<<<< HEAD
-=======
   Close,
   Error,
->>>>>>> master
 } from './infrastructure/GameServerEventData';
 import {ServerFactory} from './infrastructure/ServerFactory';
+import { QuizScreenNavigationProp } from './navigation/types';
 import {ScreenContainer} from './ScreenContainer';
 
-export interface QuizProps {}
 
-<<<<<<< HEAD
-type QuizScreenNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  'Quiz'
-  >;
+type Props = {
+  navigation: QuizScreenNavigationProp
+}
 
-=======
->>>>>>> master
-export const QuizScreen = (props: QuizProps) => {
+
+export const QuizScreen = ({ navigation } : Props) => {
   return (
+    
     <ScreenContainer>
       <Quiz></Quiz>
     </ScreenContainer>
@@ -39,34 +29,7 @@ export const QuizScreen = (props: QuizProps) => {
 };
 
 export const Quiz = () => {
-<<<<<<< HEAD
-  const [message, setMessage] = useState(['']);
-  const [content, setContent] = useState('');
-  const [joined, setJoined] = useState('');
-  const [connected, setConnected] = useState('');
-  const [title, setTitle] = useState(true);
-  const [joinButton, setJoinButton] = useState(true);
-
-  const GameServer: GameServer = ServerFactory.GetServer();
-
-  // Subscribe to events
-  GameServer.OnMatchJoined.subscribe((data: MatchJoinedData) => {
-    join(data);
-  });
-
-  GameServer.OnMatchStarting.subscribe((data: MatchStartingData) => {
-    console.log(data);
-    setContent('MATCH IS STARTING');
-  });
-
-  GameServer.OnMatchWaitingToStart.subscribe(
-    (data: MatchWaitingToStartData) => {
-      console.log('Match waiting to start:' + data);
-      setConnected('Players connected to match: ' + data.playersInMatch);
-    },
-  );
-=======
-  const [message, setMessage] = useState<string[]>([]);
+  const [message] = useState<string[]>([]);
   const [content, setContent] = useState<string>('null');
   const [joined, setJoined] = useState<string>('');
   const [connected, setConnected] = useState('');
@@ -107,7 +70,6 @@ export const Quiz = () => {
       disconnect();
     }
   });
->>>>>>> master
 
   const join = (data: MatchJoinedData) => {
     console.log(data);
@@ -117,14 +79,8 @@ export const Quiz = () => {
     setContent('Waiting for more players...');
   };
 
-<<<<<<< HEAD
-  const onMessage = (msg: string[]) => {
-    setMessage(msg);
-  };
-
-=======
->>>>>>> master
   const init = () => {
+    
     GameServer.Init();
   };
 
@@ -137,15 +93,12 @@ export const Quiz = () => {
     console.log('queueingForGame');
     try {
       GameServer.RequestJoin();
-<<<<<<< HEAD
-=======
     } catch (error) {}
   };
 
   const disconnect = () => {
     try {
       GameServer.Disconnect();
->>>>>>> master
     } catch (error) {}
   };
 

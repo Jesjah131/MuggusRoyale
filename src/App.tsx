@@ -2,17 +2,16 @@ import React, {useState, useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {QuizScreen} from './Quiz';
+import { QuizScreen} from './Quiz';
 import {Profile} from './Profile';
 import {Home} from './Home';
 import '../protocol';
 import '../starx-wsclient';
+import { RootStackParamList } from './navigation/types';
 
-export type RootStackParamList = {
-  Home: undefined;
-  Quiz: undefined;
-  Profile: undefined;
-};
+// https://reactnavigation.org/docs/typescript/ <-- Det här är ett jävla helvete. In och läs och njut.
+
+
 
 const App = () => {
   const RootStack = createStackNavigator();
@@ -38,9 +37,8 @@ const App = () => {
 
   return (
     <NavigationContainer>
-      <RootStackScreen>
-
-      </RootStackScreen>
+      <RootStackScreen/>
+      
     </NavigationContainer>
     /*
     <NavigationContainer>
