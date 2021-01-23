@@ -10,6 +10,7 @@ import {
 
 // A fake implementation of interface above
 export default class MockGameServer implements GameServer {
+  Name: string = "Mock game server";
   OnMatchJoined: SubEvent<MatchJoinedData> = new SubEvent();
   OnMatchStarting: SubEvent<MatchStartingData> = new SubEvent();
   OnMatchWaitingToStart: SubEvent<MatchWaitingToStartData> = new SubEvent();

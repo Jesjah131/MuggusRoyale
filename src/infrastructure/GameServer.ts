@@ -57,4 +57,9 @@ export interface GameServer {
    * Ask to disconnect from server
    */
   Disconnect(): void;
+
+  /**
+   * The server name (can be used for debugging purposes)
+   */
+  Name: string;
 }

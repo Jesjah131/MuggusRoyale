@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {TouchableOpacity, View, Text} from 'react-native';
 import '../protocol';
 import {GameServer} from './infrastructure/GameServer';
@@ -9,23 +9,14 @@ import {
   Close,
   Error,
 } from './infrastructure/GameServerEventData';
-import {ServerFactory} from './infrastructure/ServerFactory';
-import {QuizScreenNavigationProp} from './navigation/types';
+import MockGameServer from './infrastructure/Mock/MockGameServer';
+import {Props} from './navigation/types';
 import {ScreenContainer} from './ScreenContainer';
 
-/*
-type Props = {
-  navigation: QuizScreenNavigationProp
-}*/
 
-type QuizProp = {
-  server: GameServer;
-};
+export const QuizScreen = ({ navigation, route } : Props) => {
 
-export const QuizScreen = (server: GameServer) => {
-
-  console.log("QUIZSCREEN: " + server);
-
+  var server = route.params.server;
   return (
     <ScreenContainer>
       <Quiz server={server}></Quiz>
@@ -33,28 +24,16 @@ export const QuizScreen = (server: GameServer) => {
   );
 };
 
-export const Quiz = (props: QuizProp) => {
+export const Quiz = (props: {server: GameServer}) => {
   const [message] = useState<string[]>([]);
   const [content, setContent] = useState<string>('null');
   const [joined, setJoined] = useState<string>('');
   const [connected, setConnected] = useState('');
   const [joinButton, setJoinButton] = useState(true);
   const [trusted, setTrusted] = useState(true);
-  const [errorCode, setErrorCode] = useState<number>(0);
+  const [errorCode, setErrorCode] = useState<number>(0);  
 
-  var GameServer: GameServer = props.server; //ServerFactory.GetServer();
-
-  if (props.server != null) {
-    console.log("NOT NULL!!!!");
-    //GameServer.Init();
-  } else {
-    console.log('NULLLL');
-  }
-
-  if (GameServer != null)
-  {
-    console.log("SEEMS TO BE A SERVER PRESENT")
-  }
+  var GameServer: GameServer = props.server; 
 
   // Subscribe to events
   GameServer.OnMatchJoined.subscribe((data: MatchJoinedData) => {
@@ -96,14 +75,15 @@ export const Quiz = (props: QuizProp) => {
     setContent('Waiting for more players...');
   };
 
-  /*
+  
   const init = () => {
+    // Game server already initialized
     //GameServer.Init();
   };
 
   useEffect(() => {
     init();
-  });*/
+  });
 
   const queueGame = () => {
     setJoinButton(false);
