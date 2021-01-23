@@ -1,18 +1,12 @@
 import React from 'react';
 import {ScreenContainer} from './ScreenContainer';
-import {View, Text, StyleSheet, Button} from 'react-native';
-import {StackNavigationProp} from '@react-navigation/stack';
+import {Text, Button} from 'react-native';
 import {ServerFactory} from './infrastructure/ServerFactory';
-import {HomeScreenNavigationProp, RootStackParamList} from './navigation/types';
+import {HomeScreenProps} from './navigation/types';
 
-type Props = {
-  navigation: HomeScreenNavigationProp;
-};
-
-export const Home = ({navigation}: Props) => {
+export const Home = ({navigation}: HomeScreenProps) => {
   var server = ServerFactory.GetServer();
   server.Init();
-  console.log('HOME: ' + server.Name);
 
   // I don't know what useLayoutEffect is but it seems to work
   // https://reactnavigation.org/docs/header-buttons/
@@ -20,7 +14,7 @@ export const Home = ({navigation}: Props) => {
     navigation.setOptions({
       headerRight: () => (
         <Button
-          onPress={() => navigation.navigate('Profile')}
+          onPress={() => navigation.navigate('Profile', { username: "Muggus Mats" })}
           title="Profile"></Button>
       ),
     });

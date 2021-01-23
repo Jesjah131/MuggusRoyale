@@ -10,15 +10,9 @@ import { GameServer } from "../infrastructure/GameServer";
 export type RootStackParamList = {
   Home: undefined;
   Quiz: { server: GameServer };
-  Profile: undefined;
+  Profile: { username: string };
 };
 
-export type Props = StackScreenProps<RootStackParamList, 'Quiz'>;
-export type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
-
-
-/*
-export interface QuizProps {
-  navigation: QuizScreenNavigationProp;
-  server: GameServer;
-}*/
+export type QuizScreenProps = StackScreenProps<RootStackParamList, 'Quiz'>;
+export type HomeScreenProps = StackScreenProps<RootStackParamList, 'Home'>;
+export type ProfileScreenProps = StackScreenProps<RootStackParamList, 'Profile'>;
