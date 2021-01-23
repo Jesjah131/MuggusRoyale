@@ -1,7 +1,7 @@
 // Once again: https://reactnavigation.org/docs/typescript/
 // Check this out: https://stackoverflow.com/questions/63124951/how-can-i-type-check-reactnavigations-navigation-using-navigationhelperscommon
 
-import { StackNavigationProp, StackScreenProps } from "@react-navigation/stack";
+import { StackScreenProps } from "@react-navigation/stack";
 import { GameServer } from "../infrastructure/GameServer";
 
 /**

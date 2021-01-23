@@ -1,14 +1,12 @@
-import React, {useState, useEffect} from 'react';
+import React, {} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {QuizScreen} from './Quiz';
 import {Profile} from './Profile';
 import {Home} from './Home';
 import '../protocol';
 import '../starx-wsclient';
 import {RootStackParamList} from './navigation/types';
-import {Button} from 'react-native';
 
 // https://reactnavigation.org/docs/typescript/ <-- Det här är ett jävla helvete. In och läs och njut.
 
@@ -22,11 +20,7 @@ const App = () => {
         name="Home"
         component={Home}
         options={{
-          headerRight: () => (
-            <Button
-              onPress={() => console.log('profile press')}
-              title="Profile"></Button>
-          ),
+          
         }}></MainStack.Screen>
       <MainStack.Screen name="Profile" component={Profile}></MainStack.Screen>
     </MainStack.Navigator>

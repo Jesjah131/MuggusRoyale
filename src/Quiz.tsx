@@ -9,12 +9,11 @@ import {
   Close,
   Error,
 } from './infrastructure/GameServerEventData';
-import MockGameServer from './infrastructure/Mock/MockGameServer';
-import {Props} from './navigation/types';
+import {QuizScreenProps} from './navigation/types';
 import {ScreenContainer} from './ScreenContainer';
 
 
-export const QuizScreen = ({ navigation, route } : Props) => {
+export const QuizScreen = ({ navigation, route } : QuizScreenProps) => {
 
   var server = route.params.server;
   return (
