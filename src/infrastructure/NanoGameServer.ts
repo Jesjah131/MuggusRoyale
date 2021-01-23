@@ -23,6 +23,7 @@ export class NanoGameServer implements GameServer {
   // Take IP as parameter? Port as well?
   Init(ip: string = ''): void {
     try {
+      
       console.log("Nano: init");
       this.Starx.init(
         

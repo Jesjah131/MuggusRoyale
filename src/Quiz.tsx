@@ -10,25 +10,32 @@ import {
   Error,
 } from './infrastructure/GameServerEventData';
 import {ServerFactory} from './infrastructure/ServerFactory';
-import { QuizScreenNavigationProp } from './navigation/types';
+import {QuizScreenNavigationProp} from './navigation/types';
 import {ScreenContainer} from './ScreenContainer';
 
-
+/*
 type Props = {
   navigation: QuizScreenNavigationProp
-}
+}*/
 
+type QuizProp = {
+  server: GameServer;
+};
 
-export const QuizScreen = ({ navigation } : Props) => {
+export const QuizScreen = (server: GameServer) => {
+
+  console.log("QUIZSCREEN: " + server);
+
   return (
-    
     <ScreenContainer>
-      <Quiz></Quiz>
+     {/* 
+      <Quiz server={server}></Quiz>
+     */}
     </ScreenContainer>
   );
 };
 
-export const Quiz = () => {
+export const Quiz = (props: QuizProp) => {
   const [message] = useState<string[]>([]);
   const [content, setContent] = useState<string>('null');
   const [joined, setJoined] = useState<string>('');
@@ -37,7 +44,19 @@ export const Quiz = () => {
   const [trusted, setTrusted] = useState(true);
   const [errorCode, setErrorCode] = useState<number>(0);
 
-  const GameServer: GameServer = ServerFactory.GetServer();
+  var GameServer: GameServer = props.server; //ServerFactory.GetServer();
+
+  if (props.server != null) {
+    console.log("NOT NULL!!!!");
+    //GameServer.Init();
+  } else {
+    console.log('NULLLL');
+  }
+
+  if (GameServer != null)
+  {
+    console.log("SEEMS TO BE A SERVER PRESENT")
+  }
 
   // Subscribe to events
   GameServer.OnMatchJoined.subscribe((data: MatchJoinedData) => {
@@ -79,14 +98,14 @@ export const Quiz = () => {
     setContent('Waiting for more players...');
   };
 
+  /*
   const init = () => {
-    
-    GameServer.Init();
+    //GameServer.Init();
   };
 
   useEffect(() => {
     init();
-  });
+  });*/
 
   const queueGame = () => {
     setJoinButton(false);
