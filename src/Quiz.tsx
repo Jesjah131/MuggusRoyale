@@ -28,9 +28,7 @@ export const QuizScreen = (server: GameServer) => {
 
   return (
     <ScreenContainer>
-     {/* 
       <Quiz server={server}></Quiz>
-     */}
     </ScreenContainer>
   );
 };
