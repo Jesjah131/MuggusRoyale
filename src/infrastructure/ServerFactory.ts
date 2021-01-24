@@ -1,4 +1,4 @@
-import { GameServer } from "./GameServer";
+import { GameServer } from "../entities/GameServer";
 import MockGameServer from "./Mock/MockGameServer";
 import { NanoGameServer } from "./NanoGameServer";
 

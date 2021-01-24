@@ -1,14 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import {TouchableOpacity, View, Text} from 'react-native';
 import '../protocol';
-import {GameServer} from './infrastructure/GameServer';
+import {GameServer} from './entities/GameServer';
 import {
   MatchJoinedData,
   MatchStartingData,
   MatchWaitingToStartData,
   Close,
   Error,
-} from './infrastructure/GameServerEventData';
+} from './entities/GameServerEventData';
 import {QuizScreenProps} from './navigation/types';
 import {ScreenContainer} from './ScreenContainer';
 

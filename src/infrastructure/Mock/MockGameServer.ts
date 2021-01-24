@@ -1,12 +1,12 @@
 import {SubEvent} from 'sub-events';
-import {GameServer} from '../GameServer';
+import {GameServer} from '../../entities/GameServer';
 import {
   Error,
   Close,
   MatchJoinedData,
   MatchStartingData,
   MatchWaitingToStartData,
-} from '../GameServerEventData';
+} from '../../entities/GameServerEventData';
 
 // A fake implementation of interface above
 export default class MockGameServer implements GameServer {

@@ -1,12 +1,12 @@
 import {SubEvent} from 'sub-events';
-import {GameServer} from './GameServer';
+import {GameServer} from '../entities/GameServer';
 import {
   MatchJoinedData,
   MatchStartingData,
   MatchWaitingToStartData,
   Close,
   Error,
-} from './GameServerEventData';
+} from '../entities/GameServerEventData';
 
 /**
  * An implementation communicating with Calle's Nano Web Server
