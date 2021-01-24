@@ -1,18 +1,12 @@
-import { ScreenContainer } from "./ScreenContainer";
+import {ScreenContainer} from './ScreenContainer';
 import React from 'react';
-import {View, Text, StyleSheet, Button} from 'react-native';
+import {Text} from 'react-native';
+import {ProfileScreenProps} from './navigation/types';
 
-export interface ProfileProps {
-    navigation: any;
-    profileName: string;
-  }
-
-  
-export const Profile = (props: ProfileProps) => {
-    return (
-      <ScreenContainer>
-        <Text>{props.profileName}</Text>
-      </ScreenContainer>
-    );
-  };
-  
+export const Profile = (props: ProfileScreenProps) => {
+  return (
+    <ScreenContainer>
+      <Text>{props.route.params?.username}</Text>
+    </ScreenContainer>
+  );
+};

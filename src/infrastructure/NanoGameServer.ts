@@ -12,8 +12,16 @@ import {
  * An implementation communicating with Calle's Nano Web Server
  */
 export class NanoGameServer implements GameServer {
-  OnMatchJoined: SubEvent<MatchJoinedData> = new SubEvent();
-  OnMatchStarting: SubEvent<MatchStartingData> = new SubEvent();
+
+  constructor() {
+    this.OnMatchJoined = new SubEvent();
+    this.OnMatchStarting = new SubEvent();
+  }
+
+  Name: string = "Nano game server";
+
+  OnMatchJoined: SubEvent<MatchJoinedData>; // = new SubEvent();
+  OnMatchStarting: SubEvent<MatchStartingData>; //= new SubEvent();
   OnMatchWaitingToStart: SubEvent<MatchWaitingToStartData> = new SubEvent();
   OnClose: SubEvent<Close> = new SubEvent();
   OnError: SubEvent<Error> = new SubEvent();
@@ -23,17 +31,22 @@ export class NanoGameServer implements GameServer {
   // Take IP as parameter? Port as well?
   Init(ip: string = ''): void {
     try {
+      
+      console.log("Nano: init");
       this.Starx.init(
+        
         // web- 127.0.0.1
         // android - 192.168.0.105 (or whatever your local IP is)
-        {host: '192.168.0.105', port: 3250, path: '/nano'},
+        {host: '192.168.1.4', port: 3250, path: '/nano'},
         () => {
+
+          
+
           // Event
           this.Starx.on(
             'onMatchWaitingToStart',
             (data: MatchWaitingToStartData) => {
               this.OnMatchWaitingToStart.emit(data);
-              console.log('NANOGAMESERVER: Match waiting to start:' + data);
             },
           );
 
@@ -43,11 +56,7 @@ export class NanoGameServer implements GameServer {
             console.log('NANOGAMESERVER: Match starting! ' + data);
           });
 
-          // Event error
-          this.Starx.on('io-error', (event: Error) => {
-            this.OnError.emit(event);
-            console.log('NANOGAMESERVER: Error! ' + event);
-          });
+          
 
           // Event close
           this.Starx.on('close', (event: Close) => {
@@ -56,9 +65,20 @@ export class NanoGameServer implements GameServer {
           });
         },
       );
+
+      // Moved event outside of init, trying
+      // Event error
+      this.Starx.on('io-error', (event: Error) => {
+        this.OnError.emit(event);
+        console.log('NANOGAMESERVER: Error! ' + event.message);
+      });
+
     } catch (error) {
+      console.log("Not connected?");
       console.log('Error: ' + error);
     }
+
+    console.log("nano return");
   }
 
   RequestJoin(): void {

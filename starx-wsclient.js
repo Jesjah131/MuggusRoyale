@@ -318,7 +318,7 @@
     };
     var onerror = function (event) {
       starx.emit('io-error', event);
-      console.error('socket error: ', event);
+      //console.error('socket error: ', event);
     };
     var onclose = function (event) {
       starx.emit('close', event);
