@@ -1,5 +1,6 @@
+import { StackNavigationProp } from '@react-navigation/stack';
 import React, {useEffect, useState} from 'react';
-import {TouchableOpacity, View, Text} from 'react-native';
+import {TouchableOpacity, View, Text, Button} from 'react-native';
 import '../protocol';
 import {GameServer} from './entities/GameServer';
 import {
@@ -10,19 +11,20 @@ import {
   Error,
   NewRoundData,
 } from './entities/GameServerEventData';
-import {QuizScreenProps} from './navigation/types';
+import {QuizScreenProps, RootStackParamList} from './navigation/types';
 import {ScreenContainer} from './ScreenContainer';
 
 export const QuizScreen = ({navigation, route}: QuizScreenProps) => {
   var server = route.params.server;
+  console.log("va");
   return (
     <ScreenContainer>
-      <Quiz server={server}></Quiz>
+      <Quiz server={server} nav={navigation}></Quiz>
     </ScreenContainer>
   );
 };
 
-export const Quiz = (props: {server: GameServer}) => {
+export const Quiz = (props: {server: GameServer, nav: StackNavigationProp<RootStackParamList, 'Quiz'>}) => {
   const [message] = useState<string[]>([]);
   const [content, setContent] = useState<string>('null');
   const [joined, setJoined] = useState<string>('');
@@ -110,11 +112,13 @@ export const Quiz = (props: {server: GameServer}) => {
         {joinButton && <Text>Börja</Text>}
       </TouchableOpacity>
       <Text>{message}</Text>
-      <Text>{trusted ? 'jag är öppen!!' : 'jag är inte längre öppen!! '}</Text>
+      <Text>{trusted ? 'jag är öppenz!!' : 'jag är inte längre öppen!! '}</Text>
+      <Button title="Nese" onPress={() => props.nav.goBack()}></Button>
       <Text>{`Close reason: ${errorCode}`}</Text>
       <Text>{content}</Text>
       <Text>{connected}</Text>
       <Text>{joined}</Text>
+      <Text>Hallå</Text>
     </View>
   );
 };

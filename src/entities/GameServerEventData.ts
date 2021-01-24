@@ -18,15 +18,6 @@ export interface MatchJoinedData {
   matchAvailable: boolean;
 }
 
-<<<<<<< HEAD:src/entities/GameServerEventData.ts
-export interface NewRoundData {
-  
-}
-
-/**
- * DTO for closing connection
- */
-=======
 export declare module NewRoundData {
   export interface Question {
     id: string;
@@ -58,7 +49,6 @@ export declare module NewRoundData {
   }
 }
 
->>>>>>> master:src/infrastructure/GameServerEventData.ts
 export interface Close {
   code: number;
   isTrusted: boolean;

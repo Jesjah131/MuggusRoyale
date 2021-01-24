@@ -39,7 +39,6 @@ export class NanoGameServer implements GameServer {
         {host: '192.168.1.4', port: 3250, path: '/nano'},
         () => {          
 
-         
           // Event
           this.Starx.on(
             'onMatchWaitingToStart',
@@ -47,8 +46,6 @@ export class NanoGameServer implements GameServer {
               this.OnMatchWaitingToStart.emit(data);
             },
           );
-
-        
 
           // Event
           this.Starx.on('onMatchStarting', (data: MatchStartingData) => {
