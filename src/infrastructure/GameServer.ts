@@ -5,6 +5,7 @@
 */
 import {SubEvent} from 'sub-events';
 import {
+  NewRoundData,
   Error,
   Close,
   MatchWaitingToStartData,
@@ -30,6 +31,11 @@ export interface GameServer {
    * Event fired when match starting
    */
   OnMatchStarting: SubEvent<MatchStartingData>;
+
+  /**
+   * Event fired on socket closing
+   */
+  OnNewRound: SubEvent<NewRoundData.RootObject>;
 
   /**
    * Event fired on socket closing
