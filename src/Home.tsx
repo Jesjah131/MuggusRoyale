@@ -14,7 +14,7 @@ export const Home = ({navigation}: HomeScreenProps) => {
     navigation.setOptions({
       headerRight: () => (
         <Button
-          onPress={() => navigation.navigate('Profile', { username: "Muggus Mats" })}
+          onPress={() => navigation.navigate('Profile', { username: "Muggus 'Meze' Mats" })}
           title="Profile"></Button>
       ),
     });
