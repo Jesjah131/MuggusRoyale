@@ -12,10 +12,6 @@ import {
 import {QuizScreenProps} from './navigation/types';
 import {ScreenContainer} from './ScreenContainer';
 
-/**
- * The quiz screen
- * 
- */
 export const QuizScreen = ({ navigation, route } : QuizScreenProps) => {
 
   var server = route.params.server;
