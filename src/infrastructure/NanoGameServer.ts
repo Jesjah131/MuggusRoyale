@@ -6,6 +6,7 @@ import {
   MatchWaitingToStartData,
   Close,
   Error,
+  NewRoundData,
 } from '../entities/GameServerEventData';
 
 /**
@@ -23,6 +24,7 @@ export class NanoGameServer implements GameServer {
   OnMatchJoined: SubEvent<MatchJoinedData>; // = new SubEvent();
   OnMatchStarting: SubEvent<MatchStartingData>; //= new SubEvent();
   OnMatchWaitingToStart: SubEvent<MatchWaitingToStartData> = new SubEvent();
+  OnNewRound: SubEvent<NewRoundData> = new SubEvent();
   OnClose: SubEvent<Close> = new SubEvent();
   OnError: SubEvent<Error> = new SubEvent();
 
@@ -38,10 +40,9 @@ export class NanoGameServer implements GameServer {
         // web- 127.0.0.1
         // android - 192.168.0.105 (or whatever your local IP is)
         {host: '192.168.1.4', port: 3250, path: '/nano'},
-        () => {
+        () => {          
 
-          
-
+         
           // Event
           this.Starx.on(
             'onMatchWaitingToStart',
@@ -50,13 +51,20 @@ export class NanoGameServer implements GameServer {
             },
           );
 
+          // Event for new round ss
+          this.Starx.on(
+            'onNewRound',
+            (data: NewRoundData) => {
+              console.log("new round!");
+              this.OnNewRound.emit(data);
+            }
+          )
+
           // Event
           this.Starx.on('onMatchStarting', (data: MatchStartingData) => {
             this.OnMatchStarting.emit(data);
             console.log('NANOGAMESERVER: Match starting! ' + data);
-          });
-
-          
+          });          
 
           // Event close
           this.Starx.on('close', (event: Close) => {

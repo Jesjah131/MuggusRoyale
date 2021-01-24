@@ -18,6 +18,10 @@ export interface MatchJoinedData {
   matchAvailable: boolean;
 }
 
+export interface NewRoundData {
+  
+}
+
 /**
  * DTO for closing connection
  */
@@ -27,6 +31,9 @@ export interface Close {
   reason: string;
 }
 
+/**
+ * DTO for error
+ */
 export interface Error {
   isTrusted: boolean;
   message: string;

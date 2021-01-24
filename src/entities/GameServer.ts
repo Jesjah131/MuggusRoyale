@@ -10,6 +10,7 @@ import {
   MatchWaitingToStartData,
   MatchStartingData,
   MatchJoinedData,
+  NewRoundData,
 } from './GameServerEventData';
 
 /**
@@ -30,6 +31,11 @@ export interface GameServer {
    * Event fired when match starting
    */
   OnMatchStarting: SubEvent<MatchStartingData>;
+
+  /**
+   * Event fired when new round starts 
+   */
+  OnNewRound: SubEvent<NewRoundData>;
 
   /**
    * Event fired on socket closing
