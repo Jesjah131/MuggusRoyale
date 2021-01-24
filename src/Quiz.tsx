@@ -16,7 +16,7 @@ import {ScreenContainer} from './ScreenContainer';
 
 export const QuizScreen = ({navigation, route}: QuizScreenProps) => {
   var server = route.params.server;
-  console.log("va");
+
   return (
     <ScreenContainer>
       <Quiz server={server} nav={navigation}></Quiz>
@@ -113,12 +113,12 @@ export const Quiz = (props: {server: GameServer, nav: StackNavigationProp<RootSt
       </TouchableOpacity>
       <Text>{message}</Text>
       <Text>{trusted ? 'jag är öppenz!!' : 'jag är inte längre öppen!! '}</Text>
-      <Button title="Nese" onPress={() => props.nav.goBack()}></Button>
       <Text>{`Close reason: ${errorCode}`}</Text>
       <Text>{content}</Text>
       <Text>{connected}</Text>
       <Text>{joined}</Text>
       <Text>Hallå</Text>
+      <Button title="Nese" onPress={() => props.nav.goBack()}></Button>
     </View>
   );
 };
