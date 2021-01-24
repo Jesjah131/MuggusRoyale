@@ -8,12 +8,12 @@ import {
   MatchWaitingToStartData,
   Close,
   Error,
+  NewRoundData,
 } from './infrastructure/GameServerEventData';
 import {QuizScreenProps} from './navigation/types';
 import {ScreenContainer} from './ScreenContainer';
 
-export const QuizScreen = ({ navigation, route } : QuizScreenProps) => {
-
+export const QuizScreen = ({navigation, route}: QuizScreenProps) => {
   var server = route.params.server;
   return (
     <ScreenContainer>
@@ -29,9 +29,9 @@ export const Quiz = (props: {server: GameServer}) => {
   const [connected, setConnected] = useState('');
   const [joinButton, setJoinButton] = useState(true);
   const [trusted, setTrusted] = useState(true);
-  const [errorCode, setErrorCode] = useState<number>(0);  
+  const [errorCode, setErrorCode] = useState<number>(0);
 
-  var GameServer: GameServer = props.server; 
+  var GameServer: GameServer = props.server;
 
   // Subscribe to events
   GameServer.OnMatchJoined.subscribe((data: MatchJoinedData) => {
@@ -49,6 +49,14 @@ export const Quiz = (props: {server: GameServer}) => {
       setConnected('Players connected to match: ' + data.playersInMatch);
     },
   );
+
+  GameServer.OnNewRound.subscribe((data: NewRoundData.RootObject) => {
+    console.log('New round has started !!:' + data);
+    setConnected(
+      'Fråga nummer ett! : ' +
+        data.matchState.CurrentChallenge.questions[0].question,
+    );
+  });
 
   GameServer.OnClose.subscribe((event: Close) => {
     if (!event.isTrusted && event.code == 1000) {
@@ -73,7 +81,6 @@ export const Quiz = (props: {server: GameServer}) => {
     setContent('Waiting for more players...');
   };
 
-  
   const init = () => {
     // Game server already initialized
     //GameServer.Init();

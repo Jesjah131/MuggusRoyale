@@ -18,9 +18,37 @@ export interface MatchJoinedData {
   matchAvailable: boolean;
 }
 
-/**
- * DTO for closing connection
- */
+export declare module NewRoundData {
+  export interface Question {
+    id: string;
+    question: string;
+    unit: string;
+    category: string;
+    correctAnswer: number;
+    maxScore: number;
+  }
+
+  export interface CurrentChallenge {
+    round: number;
+    type: string;
+    questions: Question[];
+  }
+
+  export interface MatchState {
+    TotalPlayers: number;
+    PlayersRemaining: number;
+    ElimintaedPlayers: number;
+    ConnectedPlayers: number;
+    CurrentRound: number;
+    CurrentChallenge: CurrentChallenge;
+    ResponseRouteOpen: boolean;
+  }
+
+  export interface RootObject {
+    matchState: MatchState;
+  }
+}
+
 export interface Close {
   code: number;
   isTrusted: boolean;
