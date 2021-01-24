@@ -18,6 +18,7 @@ export interface MatchJoinedData {
   matchAvailable: boolean;
 }
 
+<<<<<<< HEAD:src/entities/GameServerEventData.ts
 export interface NewRoundData {
   
 }
@@ -25,6 +26,39 @@ export interface NewRoundData {
 /**
  * DTO for closing connection
  */
+=======
+export declare module NewRoundData {
+  export interface Question {
+    id: string;
+    question: string;
+    unit: string;
+    category: string;
+    correctAnswer: number;
+    maxScore: number;
+  }
+
+  export interface CurrentChallenge {
+    round: number;
+    type: string;
+    questions: Question[];
+  }
+
+  export interface MatchState {
+    TotalPlayers: number;
+    PlayersRemaining: number;
+    ElimintaedPlayers: number;
+    ConnectedPlayers: number;
+    CurrentRound: number;
+    CurrentChallenge: CurrentChallenge;
+    ResponseRouteOpen: boolean;
+  }
+
+  export interface RootObject {
+    matchState: MatchState;
+  }
+}
+
+>>>>>>> master:src/infrastructure/GameServerEventData.ts
 export interface Close {
   code: number;
   isTrusted: boolean;

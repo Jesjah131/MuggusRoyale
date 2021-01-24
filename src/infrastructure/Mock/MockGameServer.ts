@@ -11,7 +11,7 @@ import {
 
 // A fake implementation of interface above
 export default class MockGameServer implements GameServer {
-  OnNewRound: SubEvent<NewRoundData> = new SubEvent();
+  OnNewRound: SubEvent<NewRoundData.RootObject> = new SubEvent();
   Name: string = "Mock game server";
   OnMatchJoined: SubEvent<MatchJoinedData> = new SubEvent();
   OnMatchStarting: SubEvent<MatchStartingData> = new SubEvent();

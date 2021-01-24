@@ -35,7 +35,7 @@ export interface GameServer {
   /**
    * Event fired when new round starts 
    */
-  OnNewRound: SubEvent<NewRoundData>;
+  OnNewRound: SubEvent<NewRoundData.RootObject>;
 
   /**
    * Event fired on socket closing
