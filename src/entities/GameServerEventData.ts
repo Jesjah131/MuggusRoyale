@@ -11,7 +11,7 @@ export interface MatchWaitingToStartData {
 export interface MatchStartingData {}
 
 /**
- * DTO for joined game event
+ * DTOs for joined game event
  */
 export interface MatchJoinedData {
   matchId: string;
@@ -37,7 +37,7 @@ export declare module NewRoundData {
   export interface MatchState {
     TotalPlayers: number;
     PlayersRemaining: number;
-    ElimintaedPlayers: number;
+    EliminatedPlayers: number;
     ConnectedPlayers: number;
     CurrentRound: number;
     CurrentChallenge: CurrentChallenge;

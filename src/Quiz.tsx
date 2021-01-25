@@ -54,11 +54,23 @@ export const Quiz = (props: {server: GameServer, nav: StackNavigationProp<RootSt
 
   GameServer.OnNewRound.subscribe((data: NewRoundData.RootObject) => {
     console.log('New round has started !!:' + data);
+    printNewRoundData(data);
     setConnected(
       'Fråga nummer ett! : ' +
-        data.matchState.CurrentChallenge.questions[0].question,
+        data.matchState.CurrentChallenge.questions[0].question +
+        'Connected players: ' +
+        data.matchState.ConnectedPlayers,
     );
   });
+
+  const printNewRoundData = (data: NewRoundData.RootObject) => {
+    console.log(
+      'Current round: ' + data.matchState.CurrentRound + '\n' +
+      'Connected players: ' + data.matchState.ConnectedPlayers + '\n' +
+      'Current challenge: ' + data.matchState.CurrentChallenge.type + '\n'
+
+    );
+  };
 
   GameServer.OnClose.subscribe((event: Close) => {
     if (!event.isTrusted && event.code == 1000) {
@@ -108,6 +120,7 @@ export const Quiz = (props: {server: GameServer, nav: StackNavigationProp<RootSt
 
   return (
     <View>
+      <Text>Nesen</Text>
       <TouchableOpacity onPress={queueGame}>
         {joinButton && <Text>Börja</Text>}
       </TouchableOpacity>
