@@ -2,7 +2,7 @@ import { SubEvent } from "sub-events";
 import { GameServer } from "./GameServer";
 import { MatchJoinedData, MatchStartingData, NewRoundData } from "./GameServerEventData";
 import { GetQuestionType, LQOnMatchJoined, LQOnNewRound, LQQuestionType } from "./LiveQuizEventData";
-import { TriviaQuestion } from "./TriviaQuestion";
+import { TriviaQuestion } from "./questions/TriviaQuestion";
 
 /**
  * Business Logic for quiz?
