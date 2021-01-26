@@ -38,20 +38,21 @@ export declare module RoundEnded {
 }
 
 export declare module NewRoundData {
-  export interface QuizQuestion {
+
+  export interface ServerQuestion {
     id: string;
-    question: string;
     category: string;
-    alternatives: string[];
+    question: string;
+  }
+
+  export interface QuizQuestion extends ServerQuestion {
+    alternatives: [index:string];
     correctAnswer: number;
     maxScore: number;
   }
 
-  export interface RangeQuestion {
-    id: string;
-    question: string;
+  export interface RangeQuestion extends ServerQuestion {
     unit: string;
-    category: string;
     correctAnswer: number;
     maxScore: number;
   }
@@ -59,7 +60,7 @@ export declare module NewRoundData {
   export interface CurrentChallenge {
     round: number;
     type: string;
-    questions: QuizQuestion[];
+    questions: ServerQuestion[];
   }
 
   export interface MatchState {

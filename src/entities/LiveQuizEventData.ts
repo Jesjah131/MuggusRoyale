@@ -1,3 +1,5 @@
+import { Question } from "./questions/Question";
+
 export interface LQOnMatchJoined {
   didJoin: boolean;
   errorMessage: string;
@@ -8,6 +10,11 @@ export interface LQOnNewRound {
    * The round type (quiz/range/truefalse)
    */
   type: LQQuestionType;
+
+  /**
+   * 
+   */
+  question: Question
 }
 
 export enum LQQuestionType {
