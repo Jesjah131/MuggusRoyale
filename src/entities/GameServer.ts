@@ -5,8 +5,8 @@
 */
 import {SubEvent} from 'sub-events';
 import {
-  Error,
-  Close,
+  ServerErrorData,
+  ServerCloseConnectionData,
   MatchWaitingToStartData,
   MatchStartingData,
   MatchJoinedData,
@@ -40,12 +40,12 @@ export interface GameServer {
   /**
    * Event fired on socket closing
    */
-  OnClose: SubEvent<Close>;
+  OnClose: SubEvent<ServerCloseConnectionData>;
 
   /**
    * Event fired on socket error (io-error)
    */
-  OnError: SubEvent<Error>;
+  OnServerError: SubEvent<ServerErrorData>;
 
   /**
    * Initialize connection to server

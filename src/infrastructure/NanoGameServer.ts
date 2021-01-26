@@ -4,8 +4,8 @@ import {
   MatchJoinedData,
   MatchStartingData,
   MatchWaitingToStartData,
-  Close,
-  Error,
+  ServerCloseConnectionData,
+  ServerErrorData,
   NewRoundData,
 } from '../entities/GameServerEventData';
 
@@ -23,8 +23,8 @@ export class NanoGameServer implements GameServer {
   OnMatchJoined: SubEvent<MatchJoinedData>; // = new SubEvent();
   OnMatchStarting: SubEvent<MatchStartingData>; //= new SubEvent();
   OnMatchWaitingToStart: SubEvent<MatchWaitingToStartData> = new SubEvent();
-  OnClose: SubEvent<Close> = new SubEvent();
-  OnError: SubEvent<Error> = new SubEvent();
+  OnClose: SubEvent<ServerCloseConnectionData> = new SubEvent();
+  OnServerError: SubEvent<ServerErrorData> = new SubEvent();
   OnNewRound: SubEvent<NewRoundData.RootObject> = new SubEvent();
 
   private Starx: any = globalThis.starx;
@@ -54,7 +54,7 @@ export class NanoGameServer implements GameServer {
           });
 
           // Event close
-          this.Starx.on('close', (event: Close) => {
+          this.Starx.on('close', (event: ServerCloseConnectionData) => {
             this.OnClose.emit(event);
             console.log('NANOGAMESERVER: Closing! ' + event);
           });
@@ -71,13 +71,14 @@ export class NanoGameServer implements GameServer {
 
       // Moved event outside of init, trying
       // Event error
-      this.Starx.on('io-error', (event: Error) => {
-        this.OnError.emit(event);
+      this.Starx.on('io-error', (event: ServerErrorData) => {
+        this.OnServerError.emit(event);
         console.log('NANOGAMESERVER: Error! ' + event.message);
       });
     } catch (error) {
       console.log('Not connected?');
       console.log('Error: ' + error);
+      throw(error);
     }
 
     console.log('nano return');

@@ -1,8 +1,8 @@
 import {SubEvent} from 'sub-events';
 import {GameServer} from '../../entities/GameServer';
 import {
-  Error,
-  Close,
+  ServerErrorData,
+  ServerCloseConnectionData,
   MatchJoinedData,
   MatchStartingData,
   MatchWaitingToStartData,
@@ -16,8 +16,8 @@ export default class MockGameServer implements GameServer {
   OnMatchJoined: SubEvent<MatchJoinedData> = new SubEvent();
   OnMatchStarting: SubEvent<MatchStartingData> = new SubEvent();
   OnMatchWaitingToStart: SubEvent<MatchWaitingToStartData> = new SubEvent();
-  OnClose: SubEvent<Close> = new SubEvent();
-  OnError: SubEvent<Error> = new SubEvent();
+  OnClose: SubEvent<ServerCloseConnectionData> = new SubEvent();
+  OnServerError: SubEvent<ServerErrorData> = new SubEvent();
 
   Init(): void {
     throw new Error('Method not implemented.');

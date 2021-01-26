@@ -7,8 +7,8 @@ import {
   MatchJoinedData,
   MatchStartingData,
   MatchWaitingToStartData,
-  Close,
-  Error,
+  ServerCloseConnectionData,
+  ServerErrorData,
   NewRoundData,
 } from './entities/GameServerEventData';
 import {QuizScreenProps, RootStackParamList} from './navigation/types';
@@ -72,14 +72,14 @@ export const Quiz = (props: {server: GameServer, nav: StackNavigationProp<RootSt
     );
   };
 
-  GameServer.OnClose.subscribe((event: Close) => {
+  GameServer.OnClose.subscribe((event: ServerCloseConnectionData) => {
     if (!event.isTrusted && event.code == 1000) {
       setTrusted(false);
       setErrorCode(event.code);
     }
   });
 
-  GameServer.OnError.subscribe((event: Error) => {
+  GameServer.OnServerError.subscribe((event: ServerErrorData) => {
     if (!event.isTrusted) {
       setTrusted(false);
       // error - lets disconnect from server
