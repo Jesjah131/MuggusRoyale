@@ -2,7 +2,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import React, {useEffect, useState} from 'react';
 import {TouchableOpacity, View, Text, Button} from 'react-native';
 import '../protocol';
-import {GameServer} from './entities/GameServer';
+import {GameServer} from './entities/server/GameServer';
 import {
   MatchJoinedData,
   MatchStartingData,
@@ -10,7 +10,7 @@ import {
   ServerCloseConnectionData,
   ServerErrorData,
   NewRoundData,
-} from './entities/GameServerEventData';
+} from './entities/Server/GameServerEventData';
 import {QuizScreenProps, RootStackParamList} from './navigation/types';
 import {ScreenContainer} from './ScreenContainer';
 
