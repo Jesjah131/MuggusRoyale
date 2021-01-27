@@ -72,8 +72,7 @@ export class LiveQuiz {
     switch (type) {
       case LQQuestionType.Trivia:
         // Parse question as trivia question
-        var quizQuestions = data.matchState.CurrentChallenge
-          .questions as NewRoundData.QuizQuestion[];
+        var quizQuestions = data.matchState.CurrentChallenge.questions as NewRoundData.QuizQuestion[];
         var questionString = quizQuestions[0].question;
         var category = quizQuestions[0].category;
         var alternatives: TriviaQuestionAlternative[] = new Array();
@@ -82,7 +81,7 @@ export class LiveQuiz {
           alternatives.push(
             new TriviaQuestionAlternative(
               alternative,
-              i == quizQuestions[0].correctAnswer,
+              i === quizQuestions[0].correctAnswer,
             ),
           );
         }

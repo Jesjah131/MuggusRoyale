@@ -84,6 +84,21 @@ export class NanoGameServer implements GameServer {
     console.log('nano return');
   }
 
+  SubmitAnswer(): void {
+
+    var response: MatchResponse;
+
+    response = { matchId: "test", answer: 1, questionId: "qTest", round: 1 };
+
+    try {
+      this.Starx.request('match.questionresponse', response, (data : AnswerSubmittedResponse) => {
+        // Do something with data.score;
+      })
+    } catch (error) {
+      // ToDo: Handle
+    }
+  }
+
   RequestJoin(): void {
     try {
       this.Starx.request('match.queue', {}, (data: MatchJoinedData) => {
@@ -98,4 +113,16 @@ export class NanoGameServer implements GameServer {
       console.log('disconnected from socket');
     } catch (error) {}
   }
+}
+
+interface MatchResponse {
+    matchId: string,
+    answer: number,
+    questionId: string,
+    round: number
+}
+
+interface AnswerSubmittedResponse {
+  score: number,
+
 }
