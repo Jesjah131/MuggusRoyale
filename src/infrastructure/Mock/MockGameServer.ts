@@ -1,5 +1,6 @@
 import {SubEvent} from 'sub-events';
-import {GameServer} from '../../entities/GameServer';
+import {GameServer} from '../../entities/server/GameServer';
+import { GameServerAnswerData } from '../../entities/server/GameServerAnswerData';
 import {
   ServerErrorData,
   ServerCloseConnectionData,
@@ -7,10 +8,13 @@ import {
   MatchStartingData,
   MatchWaitingToStartData,
   NewRoundData,
-} from '../../entities/GameServerEventData';
+} from '../../entities/Server/GameServerEventData';
 
 // A fake implementation of interface above
 export default class MockGameServer implements GameServer {
+  SubmitAnswer(data: GameServerAnswerData): void {
+    throw new Error('Method not implemented.');
+  }
   OnNewRound: SubEvent<NewRoundData.RootObject> = new SubEvent();
   Name: string = "Mock game server";
   OnMatchJoined: SubEvent<MatchJoinedData> = new SubEvent();

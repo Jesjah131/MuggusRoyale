@@ -2,7 +2,7 @@
 // Check this out: https://stackoverflow.com/questions/63124951/how-can-i-type-check-reactnavigations-navigation-using-navigationhelperscommon
 
 import { StackScreenProps } from "@react-navigation/stack";
-import { GameServer } from "../entities/GameServer";
+import { GameServer } from "../entities/server/GameServer";
 
 /**
  * This defines the params for each screen

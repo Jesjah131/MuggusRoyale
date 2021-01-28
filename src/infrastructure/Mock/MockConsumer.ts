@@ -1,5 +1,5 @@
-import { GameServer } from "../../entities/GameServer";
-import { MatchJoinedData, MatchStartingData, MatchWaitingToStartData } from "../../entities/GameServerEventData";
+import { GameServer } from "../../entities/server/GameServer";
+import { MatchJoinedData, MatchStartingData, MatchWaitingToStartData } from "../../entities/Server/GameServerEventData";
 import { ServerFactory } from "../ServerFactory";
 
 // An example of a consumer of game server (might be a React Component?)
