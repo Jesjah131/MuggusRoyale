@@ -3,7 +3,7 @@ import {Question} from './Question';
 /**
  * A question where the task is to guess a number
  */
-export class RangeQuestion implements Question {
+export class RangeQuestion implements Question<RangeQuestionAnswer, void> {
   Id: string;
   Question: string;
   Category: string;
@@ -23,4 +23,13 @@ export class RangeQuestion implements Question {
     this.Unit = unit;
     this.CorrectAnswer = correctAnswer;
   }
+
+  answer(value: RangeQuestionAnswer) {
+
+  }
+
+}
+
+type RangeQuestionAnswer = {
+
 }

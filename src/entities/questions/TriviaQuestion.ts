@@ -3,7 +3,7 @@ import {Question} from './Question';
 /**
  * TriviaQuestion is a question with four different alternatives
  */
-export class TriviaQuestion implements Question {
+export class TriviaQuestion implements Question<TriviaQuestionAlternative, void> {
   Id: string;
   Question: string;
   Category: string;
@@ -20,7 +20,14 @@ export class TriviaQuestion implements Question {
     this.Category = category;
     this.Alternatives = alternatives;
   }
+
+  answer(alternative: TriviaQuestionAlternative) {
+    
+  }
+
 }
+
+
 
 export class TriviaQuestionAlternative {
   Alternative: string;

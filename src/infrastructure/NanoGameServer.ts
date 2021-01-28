@@ -1,5 +1,6 @@
 import {SubEvent} from 'sub-events';
-import {GameServer} from '../entities/GameServer';
+import {GameServer} from '../entities/server/GameServer';
+import { GameServerAnswerData } from '../entities/server/GameServerAnswerData';
 import {
   MatchJoinedData,
   MatchStartingData,
@@ -7,7 +8,7 @@ import {
   ServerCloseConnectionData,
   ServerErrorData,
   NewRoundData,
-} from '../entities/GameServerEventData';
+} from '../entities/Server/GameServerEventData';
 
 /**
  * An implementation communicating with Calle's Nano Web Server
@@ -17,6 +18,7 @@ export class NanoGameServer implements GameServer {
     this.OnMatchJoined = new SubEvent();
     this.OnMatchStarting = new SubEvent();
   }
+  
 
   Name: string = 'Nano game server';
 
@@ -84,20 +86,17 @@ export class NanoGameServer implements GameServer {
     console.log('nano return');
   }
 
-  SubmitAnswer(): void {
-
-    var response: MatchResponse;
-
-    response = { matchId: "test", answer: 1, questionId: "qTest", round: 1 };
-
+  SubmitAnswer(answer: GameServerAnswerData): void {
     try {
-      this.Starx.request('match.questionresponse', response, (data : AnswerSubmittedResponse) => {
+      this.Starx.request('match.questionresponse', answer, (data : AnswerSubmittedResponse) => {
         // Do something with data.score;
       })
     } catch (error) {
       // ToDo: Handle
     }
   }
+
+ 
 
   RequestJoin(): void {
     try {
@@ -115,14 +114,8 @@ export class NanoGameServer implements GameServer {
   }
 }
 
-interface MatchResponse {
-    matchId: string,
-    answer: number,
-    questionId: string,
-    round: number
-}
+
 
 interface AnswerSubmittedResponse {
   score: number,
-
 }

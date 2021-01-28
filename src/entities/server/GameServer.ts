@@ -4,6 +4,7 @@
     Not many stars/usages, so needs to be decided if safe to use?
 */
 import {SubEvent} from 'sub-events';
+import { GameServerAnswerData } from './GameServerAnswerData';
 import {
   ServerErrorData,
   ServerCloseConnectionData,
@@ -63,6 +64,11 @@ export interface GameServer {
    * Ask to disconnect from server
    */
   Disconnect(): void;
+
+  /**
+   * Send the answer for a question to the server
+   */
+  SubmitAnswer(answer: GameServerAnswerData): void;
 
   /**
    * The server name (can be used for debugging purposes)

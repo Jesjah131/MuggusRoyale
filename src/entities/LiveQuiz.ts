@@ -1,10 +1,10 @@
 import {SubEvent} from 'sub-events';
-import {GameServer} from './GameServer';
+import {GameServer} from './server/GameServer';
 import {
   MatchJoinedData,
   MatchStartingData,
   NewRoundData,
-} from './GameServerEventData';
+} from './Server/GameServerEventData';
 import {
   GetQuestionType,
   LQOnMatchJoined,
@@ -33,6 +33,7 @@ export class LiveQuiz {
     this._gameServer.OnNewRound.subscribe(this.NewRound);
   }
 
+  // ToDo: Move to parent class, let this return LiveQuiz?
   JoinGame() {
     try {
       this._gameServer.Init();
@@ -41,6 +42,10 @@ export class LiveQuiz {
     }
   }
 
+  
+
+  //#region - Server events    
+  
   /**
    * Event handler for match starting
    * @param data Contains match id and availability
@@ -67,14 +72,20 @@ export class LiveQuiz {
 
     var type = GetQuestionType(data.matchState.CurrentChallenge.type);
 
-    var question: Question;
+    var question: any;
 
     switch (type) {
       case LQQuestionType.Trivia:
         // Parse question as trivia question
-        var quizQuestions = data.matchState.CurrentChallenge.questions as NewRoundData.QuizQuestion[];
+        var quizQuestions = data.matchState.CurrentChallenge
+          .questions as NewRoundData.QuizQuestion[];
+
+        // Get the question
         var questionString = quizQuestions[0].question;
+        // Get the category
         var category = quizQuestions[0].category;
+
+        // Get the alternatives
         var alternatives: TriviaQuestionAlternative[] = new Array();
         for (let i = 0; i < quizQuestions[0].alternatives.length; i++) {
           const alternative = quizQuestions[0].alternatives[i];
@@ -95,16 +106,19 @@ export class LiveQuiz {
 
         break;
 
-        case LQQuestionType.Range:
-            var rangeQuestions = data.matchState.CurrentChallenge.questions as NewRoundData.RangeQuestion[];
+      case LQQuestionType.Range:
+        var rangeQuestions = data.matchState.CurrentChallenge
+          .questions as NewRoundData.RangeQuestion[];
 
-        default:
-            throw Error;
+      default:
+        throw Error;
     }
 
     this.OnNewRound.emit({
-      type: GetQuestionType(data.matchState.CurrentChallenge.type),
-      question: question
+      type: type,
+      question: question,
     });
   }
+  //#endregion
+
 }
