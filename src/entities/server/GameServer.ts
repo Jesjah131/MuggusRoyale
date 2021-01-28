@@ -4,13 +4,14 @@
     Not many stars/usages, so needs to be decided if safe to use?
 */
 import {SubEvent} from 'sub-events';
+import { GameServerAnswerData } from './GameServerAnswerData';
 import {
-  NewRoundData,
-  Error,
-  Close,
+  ServerErrorData,
+  ServerCloseConnectionData,
   MatchWaitingToStartData,
   MatchStartingData,
   MatchJoinedData,
+  NewRoundData,
 } from './GameServerEventData';
 
 /**
@@ -33,19 +34,19 @@ export interface GameServer {
   OnMatchStarting: SubEvent<MatchStartingData>;
 
   /**
-   * Event fired on socket closing
+   * Event fired when new round starts 
    */
   OnNewRound: SubEvent<NewRoundData.RootObject>;
 
   /**
    * Event fired on socket closing
    */
-  OnClose: SubEvent<Close>;
+  OnClose: SubEvent<ServerCloseConnectionData>;
 
   /**
    * Event fired on socket error (io-error)
    */
-  OnError: SubEvent<Error>;
+  OnServerError: SubEvent<ServerErrorData>;
 
   /**
    * Initialize connection to server
@@ -63,6 +64,11 @@ export interface GameServer {
    * Ask to disconnect from server
    */
   Disconnect(): void;
+
+  /**
+   * Send the answer for a question to the server
+   */
+  SubmitAnswer(answer: GameServerAnswerData): void;
 
   /**
    * The server name (can be used for debugging purposes)

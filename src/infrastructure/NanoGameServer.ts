@@ -1,13 +1,14 @@
 import {SubEvent} from 'sub-events';
-import {GameServer} from './GameServer';
+import {GameServer} from '../entities/server/GameServer';
+import { GameServerAnswerData } from '../entities/server/GameServerAnswerData';
 import {
   MatchJoinedData,
   MatchStartingData,
   MatchWaitingToStartData,
-  Close,
-  Error,
+  ServerCloseConnectionData,
+  ServerErrorData,
   NewRoundData,
-} from './GameServerEventData';
+} from '../entities/Server/GameServerEventData';
 
 /**
  * An implementation communicating with Calle's Nano Web Server
@@ -17,14 +18,15 @@ export class NanoGameServer implements GameServer {
     this.OnMatchJoined = new SubEvent();
     this.OnMatchStarting = new SubEvent();
   }
+  
 
   Name: string = 'Nano game server';
 
   OnMatchJoined: SubEvent<MatchJoinedData>; // = new SubEvent();
   OnMatchStarting: SubEvent<MatchStartingData>; //= new SubEvent();
   OnMatchWaitingToStart: SubEvent<MatchWaitingToStartData> = new SubEvent();
-  OnClose: SubEvent<Close> = new SubEvent();
-  OnError: SubEvent<Error> = new SubEvent();
+  OnClose: SubEvent<ServerCloseConnectionData> = new SubEvent();
+  OnServerError: SubEvent<ServerErrorData> = new SubEvent();
   OnNewRound: SubEvent<NewRoundData.RootObject> = new SubEvent();
 
   private Starx: any = globalThis.starx;
@@ -36,8 +38,9 @@ export class NanoGameServer implements GameServer {
       this.Starx.init(
         // web- 127.0.0.1
         // android - 192.168.0.105 (or whatever your local IP is)
-        {host: '192.168.0.105', port: 3250, path: '/nano'},
-        () => {
+        {host: '192.168.1.4', port: 3250, path: '/nano'},
+        () => {          
+
           // Event
           this.Starx.on(
             'onMatchWaitingToStart',
@@ -53,7 +56,7 @@ export class NanoGameServer implements GameServer {
           });
 
           // Event close
-          this.Starx.on('close', (event: Close) => {
+          this.Starx.on('close', (event: ServerCloseConnectionData) => {
             this.OnClose.emit(event);
             console.log('NANOGAMESERVER: Closing! ' + event);
           });
@@ -70,17 +73,30 @@ export class NanoGameServer implements GameServer {
 
       // Moved event outside of init, trying
       // Event error
-      this.Starx.on('io-error', (event: Error) => {
-        this.OnError.emit(event);
+      this.Starx.on('io-error', (event: ServerErrorData) => {
+        this.OnServerError.emit(event);
         console.log('NANOGAMESERVER: Error! ' + event.message);
       });
     } catch (error) {
       console.log('Not connected?');
       console.log('Error: ' + error);
+      throw(error);
     }
 
     console.log('nano return');
   }
+
+  SubmitAnswer(answer: GameServerAnswerData): void {
+    try {
+      this.Starx.request('match.questionresponse', answer, (data : AnswerSubmittedResponse) => {
+        // Do something with data.score;
+      })
+    } catch (error) {
+      // ToDo: Handle
+    }
+  }
+
+ 
 
   RequestJoin(): void {
     try {
@@ -96,4 +112,10 @@ export class NanoGameServer implements GameServer {
       console.log('disconnected from socket');
     } catch (error) {}
   }
+}
+
+
+
+interface AnswerSubmittedResponse {
+  score: number,
 }

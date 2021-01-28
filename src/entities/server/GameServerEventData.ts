@@ -11,19 +11,48 @@ export interface MatchWaitingToStartData {
 export interface MatchStartingData {}
 
 /**
- * DTO for joined game event
+ * DTOs for joined game event
  */
 export interface MatchJoinedData {
   matchId: string;
   matchAvailable: boolean;
 }
 
+export declare module RoundEnded {
+  export interface OnRoundEnded {
+    TotalScore: number;
+    Placement: number;
+    Cutoff: number;
+    Elimintaed: boolean;
+    ScoreBoard: ScoreBoard;
+  }
+
+  export interface ScoreBoard {
+    
+  }
+
+  export interface PlayerScore {
+    playerID: number;
+    score: number;
+  }
+}
+
 export declare module NewRoundData {
-  export interface Question {
+
+  export interface ServerQuestion {
     id: string;
-    question: string;
-    unit: string;
     category: string;
+    question: string;
+  }
+
+  export interface QuizQuestion extends ServerQuestion {
+    alternatives: [index:string];
+    correctAnswer: number;
+    maxScore: number;
+  }
+
+  export interface RangeQuestion extends ServerQuestion {
+    unit: string;
     correctAnswer: number;
     maxScore: number;
   }
@@ -31,13 +60,13 @@ export declare module NewRoundData {
   export interface CurrentChallenge {
     round: number;
     type: string;
-    questions: Question[];
+    questions: ServerQuestion[];
   }
 
   export interface MatchState {
     TotalPlayers: number;
     PlayersRemaining: number;
-    ElimintaedPlayers: number;
+    EliminatedPlayers: number;
     ConnectedPlayers: number;
     CurrentRound: number;
     CurrentChallenge: CurrentChallenge;
@@ -49,13 +78,16 @@ export declare module NewRoundData {
   }
 }
 
-export interface Close {
+export interface ServerCloseConnectionData {
   code: number;
   isTrusted: boolean;
   reason: string;
 }
 
-export interface Error {
+/**
+ * DTO for error
+ */
+export interface ServerErrorData {
   isTrusted: boolean;
   message: string;
 }

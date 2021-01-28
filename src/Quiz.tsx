@@ -1,28 +1,30 @@
+import { StackNavigationProp } from '@react-navigation/stack';
 import React, {useEffect, useState} from 'react';
-import {TouchableOpacity, View, Text} from 'react-native';
+import {TouchableOpacity, View, Text, Button} from 'react-native';
 import '../protocol';
-import {GameServer} from './infrastructure/GameServer';
+import {GameServer} from './entities/server/GameServer';
 import {
   MatchJoinedData,
   MatchStartingData,
   MatchWaitingToStartData,
-  Close,
-  Error,
+  ServerCloseConnectionData,
+  ServerErrorData,
   NewRoundData,
-} from './infrastructure/GameServerEventData';
-import {QuizScreenProps} from './navigation/types';
+} from './entities/Server/GameServerEventData';
+import {QuizScreenProps, RootStackParamList} from './navigation/types';
 import {ScreenContainer} from './ScreenContainer';
 
 export const QuizScreen = ({navigation, route}: QuizScreenProps) => {
   var server = route.params.server;
+
   return (
     <ScreenContainer>
-      <Quiz server={server}></Quiz>
+      <Quiz server={server} nav={navigation}></Quiz>
     </ScreenContainer>
   );
 };
 
-export const Quiz = (props: {server: GameServer}) => {
+export const Quiz = (props: {server: GameServer, nav: StackNavigationProp<RootStackParamList, 'Quiz'>}) => {
   const [message] = useState<string[]>([]);
   const [content, setContent] = useState<string>('null');
   const [joined, setJoined] = useState<string>('');
@@ -52,20 +54,32 @@ export const Quiz = (props: {server: GameServer}) => {
 
   GameServer.OnNewRound.subscribe((data: NewRoundData.RootObject) => {
     console.log('New round has started !!:' + data);
+    printNewRoundData(data);
     setConnected(
       'Fråga nummer ett! : ' +
-        data.matchState.CurrentChallenge.questions[0].question,
+        data.matchState.CurrentChallenge.questions[0].question +
+        'Connected players: ' +
+        data.matchState.ConnectedPlayers,
     );
   });
 
-  GameServer.OnClose.subscribe((event: Close) => {
+  const printNewRoundData = (data: NewRoundData.RootObject) => {
+    console.log(
+      'Current round: ' + data.matchState.CurrentRound + '\n' +
+      'Connected players: ' + data.matchState.ConnectedPlayers + '\n' +
+      'Current challenge: ' + data.matchState.CurrentChallenge.type + '\n'
+
+    );
+  };
+
+  GameServer.OnClose.subscribe((event: ServerCloseConnectionData) => {
     if (!event.isTrusted && event.code == 1000) {
       setTrusted(false);
       setErrorCode(event.code);
     }
   });
 
-  GameServer.OnError.subscribe((event: Error) => {
+  GameServer.OnServerError.subscribe((event: ServerErrorData) => {
     if (!event.isTrusted) {
       setTrusted(false);
       // error - lets disconnect from server
@@ -106,15 +120,18 @@ export const Quiz = (props: {server: GameServer}) => {
 
   return (
     <View>
+      <Text>Nesen</Text>
       <TouchableOpacity onPress={queueGame}>
         {joinButton && <Text>Börja</Text>}
       </TouchableOpacity>
       <Text>{message}</Text>
-      <Text>{trusted ? 'jag är öppen!!' : 'jag är inte längre öppen!! '}</Text>
+      <Text>{trusted ? 'jag är öppenz!!' : 'jag är inte längre öppen!! '}</Text>
       <Text>{`Close reason: ${errorCode}`}</Text>
       <Text>{content}</Text>
       <Text>{connected}</Text>
       <Text>{joined}</Text>
+      <Text>Hallå</Text>
+      <Button title="Nese" onPress={() => props.nav.goBack()}></Button>
     </View>
   );
 };
