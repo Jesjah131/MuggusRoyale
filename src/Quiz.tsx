@@ -2,7 +2,8 @@ import {StackNavigationProp} from '@react-navigation/stack';
 import React, {useEffect, useState} from 'react';
 import {TouchableOpacity, View, Text, Button} from 'react-native';
 import '../protocol';
-import {JoinQuizButton} from './components/Button';
+import {JoinQuizButton} from './components/Buttons';
+import {TriviaTimer} from './components/Timers';
 import {GameServer} from './entities/server/GameServer';
 import {
   MatchJoinedData,
@@ -140,6 +141,7 @@ export const Quiz = (props: {
       <Text>{connected}</Text>
       <Text>{joined}</Text>
       <Text>Hallå</Text>
+      <TriviaTimer initialMinute={0} initialSeconds={30}></TriviaTimer>
       <Button title="Nese" onPress={() => props.nav.goBack()}></Button>
     </View>
   );
