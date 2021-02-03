@@ -1,7 +1,8 @@
-import { StackNavigationProp } from '@react-navigation/stack';
+import {StackNavigationProp} from '@react-navigation/stack';
 import React, {useEffect, useState} from 'react';
 import {TouchableOpacity, View, Text, Button} from 'react-native';
 import '../protocol';
+import {JoinQuizButton} from './components/Button';
 import {GameServer} from './entities/server/GameServer';
 import {
   MatchJoinedData,
@@ -24,7 +25,10 @@ export const QuizScreen = ({navigation, route}: QuizScreenProps) => {
   );
 };
 
-export const Quiz = (props: {server: GameServer, nav: StackNavigationProp<RootStackParamList, 'Quiz'>}) => {
+export const Quiz = (props: {
+  server: GameServer;
+  nav: StackNavigationProp<RootStackParamList, 'Quiz'>;
+}) => {
   const [message] = useState<string[]>([]);
   const [content, setContent] = useState<string>('null');
   const [joined, setJoined] = useState<string>('');
@@ -65,10 +69,15 @@ export const Quiz = (props: {server: GameServer, nav: StackNavigationProp<RootSt
 
   const printNewRoundData = (data: NewRoundData.RootObject) => {
     console.log(
-      'Current round: ' + data.matchState.CurrentRound + '\n' +
-      'Connected players: ' + data.matchState.ConnectedPlayers + '\n' +
-      'Current challenge: ' + data.matchState.CurrentChallenge.type + '\n'
-
+      'Current round: ' +
+        data.matchState.CurrentRound +
+        '\n' +
+        'Connected players: ' +
+        data.matchState.ConnectedPlayers +
+        '\n' +
+        'Current challenge: ' +
+        data.matchState.CurrentChallenge.type +
+        '\n',
     );
   };
 
@@ -121,9 +130,9 @@ export const Quiz = (props: {server: GameServer, nav: StackNavigationProp<RootSt
   return (
     <View>
       <Text>Nesen</Text>
-      <TouchableOpacity onPress={queueGame}>
-        {joinButton && <Text>Börja</Text>}
-      </TouchableOpacity>
+      <JoinQuizButton onPress={queueGame}>
+        {joinButton && <Text>Starta!!</Text>}
+      </JoinQuizButton>
       <Text>{message}</Text>
       <Text>{trusted ? 'jag är öppenz!!' : 'jag är inte längre öppen!! '}</Text>
       <Text>{`Close reason: ${errorCode}`}</Text>
