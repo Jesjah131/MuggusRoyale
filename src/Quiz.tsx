@@ -2,7 +2,7 @@ import {StackNavigationProp} from '@react-navigation/stack';
 import React, {useEffect, useState} from 'react';
 import {TouchableOpacity, View, Text, Button} from 'react-native';
 import '../protocol';
-import {JoinQuizButton} from './components/Buttons';
+import {PrimaryButton} from './components/Buttons';
 import {TriviaTimer} from './components/Timers';
 import {GameServer} from './entities/server/GameServer';
 import {
@@ -131,9 +131,9 @@ export const Quiz = (props: {
   return (
     <View>
       <Text>Nesen</Text>
-      <JoinQuizButton onPress={queueGame}>
+      <PrimaryButton onPress={queueGame}>
         {joinButton && <Text>Starta!!</Text>}
-      </JoinQuizButton>
+      </PrimaryButton>
       <Text>{message}</Text>
       <Text>{trusted ? 'jag är öppenz!!' : 'jag är inte längre öppen!! '}</Text>
       <Text>{`Close reason: ${errorCode}`}</Text>

@@ -21,6 +21,6 @@ export const RangeAlternativeButton = (
   props: IButtonProps & IChildrenProps,
 ) => <TouchableOpacity {...props}></TouchableOpacity>;
 
-export const JoinQuizButton = (props: IButtonProps & IChildrenProps) => (
+export const PrimaryButton = (props: IButtonProps & IChildrenProps) => (
   <TouchableOpacity {...props}></TouchableOpacity>
 );
