@@ -27,9 +27,7 @@ export declare module RoundEnded {
     ScoreBoard: ScoreBoard;
   }
 
-  export interface ScoreBoard {
-    
-  }
+  export interface ScoreBoard {}
 
   export interface PlayerScore {
     playerID: number;
@@ -38,15 +36,17 @@ export declare module RoundEnded {
 }
 
 export declare module NewRoundData {
-
   export interface ServerQuestion {
     id: string;
     category: string;
     question: string;
+    alternatives: [index: string];
+    correctAnswer: number;
+    maxScore: number;
   }
 
   export interface QuizQuestion extends ServerQuestion {
-    alternatives: [index:string];
+    alternatives: [index: string];
     correctAnswer: number;
     maxScore: number;
   }
