@@ -1,6 +1,6 @@
 import {StackNavigationProp} from '@react-navigation/stack';
 import React, {useEffect, useState} from 'react';
-import {View, Text, Button} from 'react-native';
+import {View, Text, Button, TextInput} from 'react-native';
 import '../protocol';
 import {PrimaryButton, TriviaAlternativeButton} from './components/Buttons';
 import {TriviaTimer} from './components/Timers';
@@ -15,7 +15,7 @@ import {
 } from './entities/Server/GameServerEventData';
 import {QuizScreenProps, RootStackParamList} from './navigation/types';
 import {ScreenContainer} from './ScreenContainer';
-import {TriviaButtons} from './infrastructure/QuizHelper';
+import {QuizHelp} from './infrastructure/QuizHelper';
 import {GameServerAnswerData} from './entities/server/GameServerAnswerData';
 
 export const QuizScreen = ({navigation, route}: QuizScreenProps) => {
@@ -39,13 +39,16 @@ export const Quiz = (props: {
   const [joinButton, setJoinButton] = useState(true);
   const [trusted, setTrusted] = useState(true);
   const [errorCode, setErrorCode] = useState<number>(0);
-  const [alternatives, setAlternatives] = useState<string[]>([]);
+  const [alternatives, setAlternatives] = useState<NewRoundData.alternatives[]>(
+    [],
+  );
   const [roundType, setRoundType] = useState<string>('');
   const [answer, setAnswer] = useState<string>('');
   const [matchId, setMatchId] = useState<string>('');
   const [questionId, setQuestionId] = useState<string>('');
   const [currentRound, setCurrentRound] = useState<number>(0);
   const [disableAnswerButtons, setDisableAnswerButtons] = useState(false);
+  const [rangeValue, setRangeValue] = useState('');
 
   var GameServer: GameServer = props.server;
 
@@ -71,13 +74,14 @@ export const Quiz = (props: {
     printNewRoundData(data);
     setConnected(
       'Fråga nummer ett! : ' +
-        data.matchState.CurrentChallenge.questions[0].question +
+        data.matchState.currentChallenge.questions[0].question +
         'Connected players: ' +
         data.matchState.ConnectedPlayers,
     );
-    setAlternatives(data.matchState.CurrentChallenge.questions[0].alternatives);
-    setRoundType(data.matchState.CurrentChallenge.type);
-    setQuestionId(data.matchState.CurrentChallenge.questions[0].id);
+    console.log(data.matchState.currentChallenge.questions[0].alternatives);
+    setAlternatives(data.matchState.currentChallenge.questions[0].alternatives);
+    setRoundType(data.matchState.currentChallenge.type);
+    setQuestionId(data.matchState.currentChallenge.questions[0].id);
     setCurrentRound(data.matchState.CurrentRound);
     setDisableAnswerButtons(false);
   });
@@ -91,10 +95,10 @@ export const Quiz = (props: {
         data.matchState.ConnectedPlayers +
         '\n' +
         'Current challenge: ' +
-        data.matchState.CurrentChallenge.type +
+        data.matchState.currentChallenge.type +
         '\n' +
         'Current alternatives: ' +
-        data.matchState.CurrentChallenge.questions[0].alternatives +
+        data.matchState.currentChallenge.questions[0].alternatives +
         '\n',
     );
   };
@@ -148,16 +152,14 @@ export const Quiz = (props: {
 
   const answerTriviaQuestion = (answer: string) => {
     const answerData: GameServerAnswerData = {
-      answer: answer,
+      answer: parseInt(answer, 10),
       matchId: matchId,
       questionId: questionId,
       round: currentRound,
     };
     try {
       GameServer.SubmitAnswer(answerData);
-    } catch (error) {
-      //Errorhandla
-    }
+    } catch (error) {}
     setDisableAnswerButtons(true);
   };
 
@@ -173,32 +175,13 @@ export const Quiz = (props: {
       <Text>{connected}</Text>
       <Text>{joined}</Text>
       <TriviaTimer initialMinute={0} initialSeconds={30}></TriviaTimer>
-      {roundType === 'quiz' && alternatives ? (
-        <>
-          <TriviaAlternativeButton
-            disabled={disableAnswerButtons}
-            onPress={() => answerTriviaQuestion(alternatives[0])}>
-            <Text>{alternatives[0]}</Text>
-          </TriviaAlternativeButton>
-          <TriviaAlternativeButton
-            disabled={disableAnswerButtons}
-            onPress={() => answerTriviaQuestion(alternatives[1])}>
-            <Text>{alternatives[1]}</Text>
-          </TriviaAlternativeButton>
-          <TriviaAlternativeButton
-            disabled={disableAnswerButtons}
-            onPress={() => answerTriviaQuestion(alternatives[2])}>
-            <Text>{alternatives[2]}</Text>
-          </TriviaAlternativeButton>
-          <TriviaAlternativeButton
-            disabled={disableAnswerButtons}
-            onPress={() => answerTriviaQuestion(alternatives[3])}>
-            <Text>{alternatives[3]}</Text>
-          </TriviaAlternativeButton>
-        </>
-      ) : (
-        <Text>Range :(</Text>
-      )}
+      <QuizHelp
+        alternatives={alternatives}
+        roundType={roundType}
+        onPress={() => answerTriviaQuestion}
+        onChangeTextHandler={(rangeValue) => setRangeValue(rangeValue)}
+        rangeValue={rangeValue}
+      />
       <Button title="Nese" onPress={() => props.nav.goBack()}></Button>
     </View>
   );

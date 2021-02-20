@@ -40,13 +40,18 @@ export declare module NewRoundData {
     id: string;
     category: string;
     question: string;
-    alternatives: [index: string];
+    alternatives: alternatives[];
     correctAnswer: number;
     maxScore: number;
   }
 
+  export interface alternatives {
+    alternative: string;
+    id: number;
+  }
+
   export interface QuizQuestion extends ServerQuestion {
-    alternatives: [index: string];
+    alternatives: alternatives[];
     correctAnswer: number;
     maxScore: number;
   }
@@ -69,7 +74,7 @@ export declare module NewRoundData {
     EliminatedPlayers: number;
     ConnectedPlayers: number;
     CurrentRound: number;
-    CurrentChallenge: CurrentChallenge;
+    currentChallenge: CurrentChallenge;
     ResponseRouteOpen: boolean;
   }
 

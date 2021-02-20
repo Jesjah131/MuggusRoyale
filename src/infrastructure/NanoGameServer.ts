@@ -63,7 +63,7 @@ export class NanoGameServer implements GameServer {
             this.OnNewRound.emit(data);
             console.log(
               'NANOGAMESERVER: New round!! ' +
-                data.matchState.CurrentChallenge.questions[0].question,
+                data.matchState.currentChallenge.questions[0].question,
             );
           });
         },
@@ -89,13 +89,9 @@ export class NanoGameServer implements GameServer {
       this.Starx.request(
         'match.questionresponse',
         answer,
-        (data: AnswerSubmittedResponse) => {
-          // Do something with data.score;
-        },
+        (data: AnswerSubmittedResponse) => {},
       );
-    } catch (error) {
-      // ToDo: Handle
-    }
+    } catch (error) {}
   }
 
   RequestJoin(): void {

@@ -3,7 +3,7 @@
  */
 export interface GameServerAnswerData {
   matchId: string;
-  answer: string;
+  answer: number;
   questionId: string;
   round: number;
 }
