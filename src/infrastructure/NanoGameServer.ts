@@ -1,6 +1,6 @@
 import {SubEvent} from 'sub-events';
 import {GameServer} from '../entities/server/GameServer';
-import { GameServerAnswerData } from '../entities/server/GameServerAnswerData';
+import {GameServerAnswerData} from '../entities/server/GameServerAnswerData';
 import {
   MatchJoinedData,
   MatchStartingData,
@@ -18,7 +18,6 @@ export class NanoGameServer implements GameServer {
     this.OnMatchJoined = new SubEvent();
     this.OnMatchStarting = new SubEvent();
   }
-  
 
   Name: string = 'Nano game server';
 
@@ -38,9 +37,8 @@ export class NanoGameServer implements GameServer {
       this.Starx.init(
         // web- 127.0.0.1
         // android - 192.168.0.105 (or whatever your local IP is)
-        {host: '192.168.1.4', port: 3250, path: '/nano'},
-        () => {          
-
+        {host: '192.168.0.105', port: 3250, path: '/nano'},
+        () => {
           // Event
           this.Starx.on(
             'onMatchWaitingToStart',
@@ -65,7 +63,7 @@ export class NanoGameServer implements GameServer {
             this.OnNewRound.emit(data);
             console.log(
               'NANOGAMESERVER: New round!! ' +
-                data.matchState.CurrentChallenge.questions[0].question,
+                data.matchState.currentChallenge.questions[0].question,
             );
           });
         },
@@ -80,7 +78,7 @@ export class NanoGameServer implements GameServer {
     } catch (error) {
       console.log('Not connected?');
       console.log('Error: ' + error);
-      throw(error);
+      throw error;
     }
 
     console.log('nano return');
@@ -88,15 +86,27 @@ export class NanoGameServer implements GameServer {
 
   SubmitAnswer(answer: GameServerAnswerData): void {
     try {
-      this.Starx.request('match.questionresponse', answer, (data : AnswerSubmittedResponse) => {
-        // Do something with data.score;
-      })
+      console.log(
+        'vi svarar i gameservern: ' +
+          answer.answer +
+          ' ' +
+          answer.matchId +
+          ' ' +
+          answer.questionId +
+          ' ' +
+          answer.round,
+      );
+      this.Starx.request(
+        'match.questionresponse',
+        answer,
+        (data: AnswerSubmittedResponse) => {
+          console.log('Servern svarar oss med: ' + data.score);
+        },
+      );
     } catch (error) {
-      // ToDo: Handle
+      console.log('gick det dåligt i servern?');
     }
   }
-
- 
 
   RequestJoin(): void {
     try {
@@ -114,8 +124,6 @@ export class NanoGameServer implements GameServer {
   }
 }
 
-
-
 interface AnswerSubmittedResponse {
-  score: number,
+  score: number;
 }
