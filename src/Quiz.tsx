@@ -43,12 +43,12 @@ export const Quiz = (props: {
     [],
   );
   const [roundType, setRoundType] = useState<string>('');
-  const [answer, setAnswer] = useState<string>('');
   const [matchId, setMatchId] = useState<string>('');
   const [questionId, setQuestionId] = useState<string>('');
   const [currentRound, setCurrentRound] = useState<number>(0);
   const [disableAnswerButtons, setDisableAnswerButtons] = useState(false);
   const [rangeValue, setRangeValue] = useState('');
+  const [RoundTime, setRoundTime] = useState<number>(0);
 
   var GameServer: GameServer = props.server;
 
@@ -82,14 +82,15 @@ export const Quiz = (props: {
     setAlternatives(data.matchState.currentChallenge.questions[0].alternatives);
     setRoundType(data.matchState.currentChallenge.type);
     setQuestionId(data.matchState.currentChallenge.questions[0].id);
-    setCurrentRound(data.matchState.CurrentRound);
+    setCurrentRound(data.matchState.currentRound);
     setDisableAnswerButtons(false);
+    setRoundTime(30);
   });
 
   const printNewRoundData = (data: NewRoundData.RootObject) => {
     console.log(
       'Current round: ' +
-        data.matchState.CurrentRound +
+        data.matchState.currentRound +
         '\n' +
         'Connected players: ' +
         data.matchState.ConnectedPlayers +
@@ -158,6 +159,7 @@ export const Quiz = (props: {
       round: currentRound,
     };
     try {
+      console.log('Nu svarar vi!!: ' + answerData.answer);
       GameServer.SubmitAnswer(answerData);
     } catch (error) {}
     setDisableAnswerButtons(true);
@@ -174,15 +176,16 @@ export const Quiz = (props: {
       <Text>{content}</Text>
       <Text>{connected}</Text>
       <Text>{joined}</Text>
-      <TriviaTimer initialMinute={0} initialSeconds={30}></TriviaTimer>
+      <TriviaTimer initialSeconds={RoundTime} />
       <QuizHelp
         alternatives={alternatives}
         roundType={roundType}
-        onPress={() => answerTriviaQuestion}
+        onPress={answerTriviaQuestion}
         onChangeTextHandler={(rangeValue) => setRangeValue(rangeValue)}
         rangeValue={rangeValue}
+        disableButtons={disableAnswerButtons}
       />
-      <Button title="Nese" onPress={() => props.nav.goBack()}></Button>
+      <Button title="Nese" onPress={() => props.nav.goBack()} />
     </View>
   );
 };

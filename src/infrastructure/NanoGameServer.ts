@@ -86,12 +86,26 @@ export class NanoGameServer implements GameServer {
 
   SubmitAnswer(answer: GameServerAnswerData): void {
     try {
+      console.log(
+        'vi svarar i gameservern: ' +
+          answer.answer +
+          ' ' +
+          answer.matchId +
+          ' ' +
+          answer.questionId +
+          ' ' +
+          answer.round,
+      );
       this.Starx.request(
         'match.questionresponse',
         answer,
-        (data: AnswerSubmittedResponse) => {},
+        (data: AnswerSubmittedResponse) => {
+          console.log('Servern svarar oss med: ' + data.score);
+        },
       );
-    } catch (error) {}
+    } catch (error) {
+      console.log('gick det dåligt i servern?');
+    }
   }
 
   RequestJoin(): void {

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {Text, TextInput, View} from 'react-native';
 import {PrimaryButton, TriviaAlternativeButton} from '../components/Buttons';
+import {TriviaTimer} from '../components/Timers';
 import {NewRoundData} from '../entities/server/GameServerEventData';
 
 //A class to help print Quiz-specific elements
@@ -8,9 +9,10 @@ import {NewRoundData} from '../entities/server/GameServerEventData';
 interface IAlternativeProps {
   alternatives: NewRoundData.alternatives[];
   roundType: string;
-  onPress: (e: Event) => void;
+  onPress: (e: string) => void;
   onChangeTextHandler: (e: string) => void;
   rangeValue: string;
+  disableButtons?: boolean;
 }
 
 interface IChildrenProps {
@@ -18,13 +20,14 @@ interface IChildrenProps {
 }
 
 export const QuizHelp = (props: IAlternativeProps & IChildrenProps) => {
-  console.log('kukarsson i TriviaButtons: ' + props.alternatives);
   return props.roundType === 'quiz' ? (
     <View>
       {props.alternatives &&
         props.alternatives.map((item, i) => {
           return (
-            <TriviaAlternativeButton onPress={props.onPress}>
+            <TriviaAlternativeButton
+              onPress={() => props.onPress(i.toString())}
+              disabled={props.disableButtons}>
               <Text>{item.alternative}</Text>
             </TriviaAlternativeButton>
           );

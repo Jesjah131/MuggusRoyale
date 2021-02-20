@@ -73,7 +73,7 @@ export declare module NewRoundData {
     PlayersRemaining: number;
     EliminatedPlayers: number;
     ConnectedPlayers: number;
-    CurrentRound: number;
+    currentRound: number;
     currentChallenge: CurrentChallenge;
     ResponseRouteOpen: boolean;
   }
