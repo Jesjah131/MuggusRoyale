@@ -7,6 +7,7 @@ import {StyleSheet, TouchableOpacity} from 'react-native';
 interface IButtonProps {
   disabled?: boolean;
   onPress: (e: Event) => void;
+  onPressIn?: (e: Event) => void;
 }
 
 interface IChildrenProps {
