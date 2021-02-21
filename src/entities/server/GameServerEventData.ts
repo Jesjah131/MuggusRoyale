@@ -96,3 +96,7 @@ export interface ServerErrorData {
   isTrusted: boolean;
   message: string;
 }
+
+export interface AnswerSubmittedResponse {
+  score: number;
+}

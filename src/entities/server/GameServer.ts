@@ -4,7 +4,7 @@
     Not many stars/usages, so needs to be decided if safe to use?
 */
 import {SubEvent} from 'sub-events';
-import { GameServerAnswerData } from './GameServerAnswerData';
+import {GameServerAnswerData} from './GameServerAnswerData';
 import {
   ServerErrorData,
   ServerCloseConnectionData,
@@ -12,6 +12,7 @@ import {
   MatchStartingData,
   MatchJoinedData,
   NewRoundData,
+  AnswerSubmittedResponse,
 } from './GameServerEventData';
 
 /**
@@ -34,7 +35,7 @@ export interface GameServer {
   OnMatchStarting: SubEvent<MatchStartingData>;
 
   /**
-   * Event fired when new round starts 
+   * Event fired when new round starts
    */
   OnNewRound: SubEvent<NewRoundData.RootObject>;
 
@@ -47,6 +48,8 @@ export interface GameServer {
    * Event fired on socket error (io-error)
    */
   OnServerError: SubEvent<ServerErrorData>;
+
+  OnAnswerSubmittedResponse: SubEvent<AnswerSubmittedResponse>;
 
   /**
    * Initialize connection to server

@@ -8,6 +8,7 @@ import {
   ServerCloseConnectionData,
   ServerErrorData,
   NewRoundData,
+  AnswerSubmittedResponse,
 } from '../entities/Server/GameServerEventData';
 
 /**
@@ -27,6 +28,7 @@ export class NanoGameServer implements GameServer {
   OnClose: SubEvent<ServerCloseConnectionData> = new SubEvent();
   OnServerError: SubEvent<ServerErrorData> = new SubEvent();
   OnNewRound: SubEvent<NewRoundData.RootObject> = new SubEvent();
+  OnAnswerSubmittedResponse: SubEvent<AnswerSubmittedResponse> = new SubEvent();
 
   private Starx: any = globalThis.starx;
 
@@ -101,6 +103,7 @@ export class NanoGameServer implements GameServer {
         answer,
         (data: AnswerSubmittedResponse) => {
           console.log('Servern svarar oss med: ' + data.score);
+          this.OnAnswerSubmittedResponse.emit(data);
         },
       );
     } catch (error) {
@@ -122,8 +125,4 @@ export class NanoGameServer implements GameServer {
       console.log('disconnected from socket');
     } catch (error) {}
   }
-}
-
-interface AnswerSubmittedResponse {
-  score: number;
 }
