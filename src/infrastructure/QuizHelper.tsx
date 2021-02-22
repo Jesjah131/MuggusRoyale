@@ -4,7 +4,7 @@ import {Text, TextInput, View} from 'react-native';
 import {PrimaryButton, TriviaAlternativeButton} from '../components/Buttons';
 import {NewRoundData} from '../entities/server/GameServerEventData';
 
-//A class to help print Quiz-specific elements
+/**A class to help print Quiz-specific elements**/
 
 interface IAlternativeProps {
   onPress: (answer: number, questionId: string, currentRound: number) => void;
@@ -15,6 +15,7 @@ interface IChildrenProps {
   children?: any;
 }
 
+/**Takes care of an active Challenge**/
 export const ChallengeHelper = (props: IAlternativeProps & IChildrenProps) => {
   const [alternatives, setAlternatives] = useState<NewRoundData.alternatives[]>(
     [],
