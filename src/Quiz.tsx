@@ -162,9 +162,13 @@ export const Quiz = (props: {
     } catch (error) {}
   };
 
-  const answerTriviaQuestion = (answer: string) => {
+  const answerTriviaQuestion = (
+    answer: number,
+    questionId: string,
+    currentRound: number,
+  ) => {
     const answerData: GameServerAnswerData = {
-      answer: parseInt(answer, 10),
+      answer: answer,
       matchId: matchId,
       questionId: questionId,
       round: currentRound,

@@ -2,12 +2,13 @@ import * as React from 'react';
 import {useEffect, useState} from 'react';
 import {Text, TextInput, View} from 'react-native';
 import {PrimaryButton, TriviaAlternativeButton} from '../components/Buttons';
+import {GameServerAnswerData} from '../entities/server/GameServerAnswerData';
 import {NewRoundData} from '../entities/server/GameServerEventData';
 
 //A class to help print Quiz-specific elements
 
 interface IAlternativeProps {
-  onPress: (e: string) => void;
+  onPress: (answer: number, questionId: string, currentRound: number) => void;
   onChangeTextHandler: (e: string) => void;
   rangeValue: string;
   disableButtons?: boolean;
@@ -24,12 +25,12 @@ export const QuizHelp = (props: IAlternativeProps & IChildrenProps) => {
   );
   const [correctAnswer, setCorrectAnswer] = useState<number>();
   const [category, setCategory] = useState<string>('');
-  const [questionId, setQuestionId] = useState<number>(0);
   const [maxScore, setMaxScore] = useState<number>(0);
   const [questions, setQuestions] = useState<NewRoundData.ServerQuestion[]>([]);
   const [question, setQuestion] = useState<string>('');
   const [currentQuestion, setCurrentQuestion] = useState<number>(0);
   const [roundType, setRoundType] = useState<string>('');
+  const [waitingForNextRound, setWaitingForNextRound] = useState<boolean>(true);
 
   useEffect(() => {
     setCurrentQuestion(0);
@@ -48,12 +49,21 @@ export const QuizHelp = (props: IAlternativeProps & IChildrenProps) => {
     }
   }, [currentQuestion]);
 
-  const handleAnswerButtonClicked = () => {
+  const handleAnswerButtonClicked = (answer: string) => {
+    //answer to server
+    props.onPress(
+      parseInt(answer, 10),
+      questions[currentQuestion].id,
+      props.currentChallenge.round,
+    );
+
+    //play next question on current round
     if (questions.length > currentQuestion) {
       const nextQuestion = currentQuestion + 1;
       setCurrentQuestion(nextQuestion);
     }
   };
+
   return roundType === 'quiz' ? (
     <View>
       <Text>{question}</Text>
@@ -61,8 +71,7 @@ export const QuizHelp = (props: IAlternativeProps & IChildrenProps) => {
         alternatives.map((item, i) => {
           return (
             <TriviaAlternativeButton
-              onPress={() => props.onPress(i.toString())}
-              onPressIn={() => handleAnswerButtonClicked()}
+              onPress={() => handleAnswerButtonClicked(i.toString())}
               disabled={props.disableButtons}>
               <Text>{item.alternative}</Text>
             </TriviaAlternativeButton>
@@ -78,8 +87,7 @@ export const QuizHelp = (props: IAlternativeProps & IChildrenProps) => {
         value={props.rangeValue}
       />
       <PrimaryButton
-        onPress={() => props.onPress(props.rangeValue)}
-        onPressIn={() => handleAnswerButtonClicked()}>
+        onPress={() => handleAnswerButtonClicked(props.rangeValue)}>
         <Text>Jag vill att du svarar</Text>
       </PrimaryButton>
     </View>
