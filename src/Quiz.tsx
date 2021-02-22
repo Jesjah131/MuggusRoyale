@@ -16,7 +16,7 @@ import {
 } from './entities/Server/GameServerEventData';
 import {QuizScreenProps, RootStackParamList} from './navigation/types';
 import {ScreenContainer} from './ScreenContainer';
-import {QuizHelp} from './infrastructure/QuizHelper';
+import {ChallengeHelper} from './infrastructure/QuizHelper';
 import {GameServerAnswerData} from './entities/server/GameServerAnswerData';
 
 export const QuizScreen = ({navigation, route}: QuizScreenProps) => {
@@ -190,13 +190,10 @@ export const Quiz = (props: {
       <Text>{connected}</Text>
       <Text>{joined}</Text>
       <TriviaTimer initialSeconds={RoundTime} />
-      <Text>{score}</Text>
+      <Text>{`Poäng: ${score}`}</Text>
       {challengeActive && (
-        <QuizHelp
+        <ChallengeHelper
           onPress={answerTriviaQuestion}
-          onChangeTextHandler={(rangeValue) => setRangeValue(rangeValue)}
-          rangeValue={rangeValue}
-          disableButtons={disableAnswerButtons}
           currentChallenge={currentChallenge!}
         />
       )}
