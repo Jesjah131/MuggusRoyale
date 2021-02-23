@@ -3,7 +3,6 @@ import React, {useEffect, useState} from 'react';
 import {View, Text, Button} from 'react-native';
 import '../protocol';
 import {PrimaryButton} from './components/Buttons';
-import {TriviaTimer} from './components/Timers';
 import {GameServer} from './entities/server/GameServer';
 import {
   MatchJoinedData,
@@ -13,10 +12,11 @@ import {
   ServerErrorData,
   NewRoundData,
   AnswerSubmittedResponse,
+  RoundEnded,
 } from './entities/Server/GameServerEventData';
 import {QuizScreenProps, RootStackParamList} from './navigation/types';
 import {ScreenContainer} from './ScreenContainer';
-import {QuizHelp} from './infrastructure/QuizHelper';
+import {ChallengeHelper} from './infrastructure/QuizHelper';
 import {GameServerAnswerData} from './entities/server/GameServerAnswerData';
 
 export const QuizScreen = ({navigation, route}: QuizScreenProps) => {
@@ -41,18 +41,14 @@ export const Quiz = (props: {
   const [trusted, setTrusted] = useState(true);
   const [errorCode, setErrorCode] = useState<number>(0);
   const [matchId, setMatchId] = useState<string>('');
-  const [questionId, setQuestionId] = useState<string>('');
-  const [currentRound, setCurrentRound] = useState<number>(0);
-  const [disableAnswerButtons, setDisableAnswerButtons] = useState(false);
-  const [rangeValue, setRangeValue] = useState('');
   const [RoundTime, setRoundTime] = useState<number>(0);
-  const [currentQuestion, setCurrentQuestion] = useState<number>(0);
   const [score, setScore] = useState<number>(0);
   const [
     currentChallenge,
     setCurrentChallange,
   ] = useState<NewRoundData.CurrentChallenge>();
   const [challengeActive, setChallengeActive] = useState<boolean>(false);
+  const [roundEnded, setRoundEnded] = useState<boolean>(false);
 
   var GameServer: GameServer = props.server;
 
@@ -77,17 +73,15 @@ export const Quiz = (props: {
     console.log('New round has started !!:' + data);
     printNewRoundData(data);
     setConnected('Connected players: ' + data.matchState.ConnectedPlayers);
-    console.log(
-      data.matchState.currentChallenge.questions[currentQuestion].alternatives,
-    );
-    setQuestionId(
-      data.matchState.currentChallenge.questions[currentQuestion].id,
-    );
-    setCurrentRound(data.matchState.currentRound);
-    setDisableAnswerButtons(false);
+    console.log(data.matchState.currentChallenge.questions[0].alternatives);
     setRoundTime(30);
     setCurrentChallange(data.matchState.currentChallenge);
     setChallengeActive(true);
+  });
+
+  GameServer.OnRoundEnded.subscribe((data: RoundEnded.OnRoundEnded) => {
+    setChallengeActive(false);
+    setRoundEnded(true);
   });
 
   const printNewRoundData = (data: NewRoundData.RootObject) => {
@@ -102,8 +96,7 @@ export const Quiz = (props: {
         data.matchState.currentChallenge.type +
         '\n' +
         'Current alternatives: ' +
-        data.matchState.currentChallenge.questions[currentQuestion]
-          .alternatives +
+        data.matchState.currentChallenge.questions[0].alternatives +
         '\n',
     );
   };
@@ -162,9 +155,13 @@ export const Quiz = (props: {
     } catch (error) {}
   };
 
-  const answerTriviaQuestion = (answer: string) => {
+  const answerTriviaQuestion = (
+    answer: number,
+    questionId: string,
+    currentRound: number,
+  ) => {
     const answerData: GameServerAnswerData = {
-      answer: parseInt(answer, 10),
+      answer: answer,
       matchId: matchId,
       questionId: questionId,
       round: currentRound,
@@ -185,16 +182,14 @@ export const Quiz = (props: {
       <Text>{content}</Text>
       <Text>{connected}</Text>
       <Text>{joined}</Text>
-      <TriviaTimer initialSeconds={RoundTime} />
-      <Text>{score}</Text>
-      {challengeActive && (
-        <QuizHelp
+      <Text>{`Poäng: ${score}`}</Text>
+      {challengeActive ? (
+        <ChallengeHelper
           onPress={answerTriviaQuestion}
-          onChangeTextHandler={(rangeValue) => setRangeValue(rangeValue)}
-          rangeValue={rangeValue}
-          disableButtons={disableAnswerButtons}
           currentChallenge={currentChallenge!}
         />
+      ) : (
+        roundEnded && <Text>Rundan är över...</Text>
       )}
       <Button title="Nese" onPress={() => props.nav.goBack()} />
     </View>
