@@ -20,10 +20,10 @@ export interface MatchJoinedData {
 
 export declare module RoundEnded {
   export interface OnRoundEnded {
-    TotalScore: number;
+    totalScore: number;
     Placement: number;
     Cutoff: number;
-    Elimintaed: boolean;
+    eliminated: boolean;
     ScoreBoard: ScoreBoard;
   }
 

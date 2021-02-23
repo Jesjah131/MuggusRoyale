@@ -12,6 +12,7 @@ import {
   ServerErrorData,
   NewRoundData,
   AnswerSubmittedResponse,
+  RoundEnded,
 } from './entities/Server/GameServerEventData';
 import {QuizScreenProps, RootStackParamList} from './navigation/types';
 import {ScreenContainer} from './ScreenContainer';
@@ -47,6 +48,7 @@ export const Quiz = (props: {
     setCurrentChallange,
   ] = useState<NewRoundData.CurrentChallenge>();
   const [challengeActive, setChallengeActive] = useState<boolean>(false);
+  const [roundEnded, setRoundEnded] = useState<boolean>(false);
 
   var GameServer: GameServer = props.server;
 
@@ -75,6 +77,11 @@ export const Quiz = (props: {
     setRoundTime(30);
     setCurrentChallange(data.matchState.currentChallenge);
     setChallengeActive(true);
+  });
+
+  GameServer.OnRoundEnded.subscribe((data: RoundEnded.OnRoundEnded) => {
+    setChallengeActive(false);
+    setRoundEnded(true);
   });
 
   const printNewRoundData = (data: NewRoundData.RootObject) => {
@@ -176,11 +183,13 @@ export const Quiz = (props: {
       <Text>{connected}</Text>
       <Text>{joined}</Text>
       <Text>{`Poäng: ${score}`}</Text>
-      {challengeActive && (
+      {challengeActive ? (
         <ChallengeHelper
           onPress={answerTriviaQuestion}
           currentChallenge={currentChallenge!}
         />
+      ) : (
+        roundEnded && <Text>Rundan är över...</Text>
       )}
       <Button title="Nese" onPress={() => props.nav.goBack()} />
     </View>

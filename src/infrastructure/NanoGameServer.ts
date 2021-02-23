@@ -9,6 +9,7 @@ import {
   ServerErrorData,
   NewRoundData,
   AnswerSubmittedResponse,
+  RoundEnded,
 } from '../entities/Server/GameServerEventData';
 
 /**
@@ -28,6 +29,7 @@ export class NanoGameServer implements GameServer {
   OnClose: SubEvent<ServerCloseConnectionData> = new SubEvent();
   OnServerError: SubEvent<ServerErrorData> = new SubEvent();
   OnNewRound: SubEvent<NewRoundData.RootObject> = new SubEvent();
+  OnRoundEnded: SubEvent<RoundEnded.OnRoundEnded> = new SubEvent();
   OnAnswerSubmittedResponse: SubEvent<AnswerSubmittedResponse> = new SubEvent();
 
   private Starx: any = globalThis.starx;
@@ -66,6 +68,15 @@ export class NanoGameServer implements GameServer {
             console.log(
               'NANOGAMESERVER: New round!! ' +
                 data.matchState.currentChallenge.questions[0].question,
+            );
+          });
+
+          this.Starx.on('onRoundEnded', (data: RoundEnded.OnRoundEnded) => {
+            this.OnRoundEnded.emit(data);
+            console.log(
+              'NANOGAMESERVER: Round ended!! ' +
+                data.totalScore +
+                data.eliminated,
             );
           });
         },

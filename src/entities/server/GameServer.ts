@@ -13,6 +13,7 @@ import {
   MatchJoinedData,
   NewRoundData,
   AnswerSubmittedResponse,
+  RoundEnded,
 } from './GameServerEventData';
 
 /**
@@ -38,6 +39,11 @@ export interface GameServer {
    * Event fired when new round starts
    */
   OnNewRound: SubEvent<NewRoundData.RootObject>;
+
+  /**
+   * Event fired when round ends
+   */
+  OnRoundEnded: SubEvent<RoundEnded.OnRoundEnded>;
 
   /**
    * Event fired on socket closing

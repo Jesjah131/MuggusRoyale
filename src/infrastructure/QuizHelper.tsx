@@ -63,7 +63,7 @@ export const ChallengeHelper = (props: IAlternativeProps & IChildrenProps) => {
   };
 
   if (questions.length === currentQuestion) {
-    return <Text>Väntar på nästa runda...</Text>;
+    return <Text>Väntar på motståndare...</Text>;
   }
 
   return (
