@@ -2,6 +2,7 @@ import * as React from 'react';
 import {useEffect, useState} from 'react';
 import {Text, TextInput, View} from 'react-native';
 import {PrimaryButton, TriviaAlternativeButton} from '../components/Buttons';
+import {ChallengeTimer} from '../components/Timers';
 import {NewRoundData} from '../entities/server/GameServerEventData';
 
 /**A class to help print Quiz-specific elements**/
@@ -65,30 +66,35 @@ export const ChallengeHelper = (props: IAlternativeProps & IChildrenProps) => {
     return <Text>Väntar på nästa runda...</Text>;
   }
 
-  return roundType === 'quiz' ? (
+  return (
     <View>
       <Text>{question}</Text>
-      {alternatives &&
-        alternatives.map((item, i) => {
-          return (
-            <TriviaAlternativeButton
-              onPress={() => handleAnswerButtonClicked(i.toString())}>
-              <Text>{item.alternative}</Text>
-            </TriviaAlternativeButton>
-          );
-        })}
+      <ChallengeTimer initialSeconds={30}></ChallengeTimer>
+      {roundType === 'quiz' ? (
+        <View>
+          {alternatives &&
+            alternatives.map((item, i) => {
+              return (
+                <TriviaAlternativeButton
+                  key={i}
+                  onPress={() => handleAnswerButtonClicked(i.toString())}>
+                  <Text>{item.alternative}</Text>
+                </TriviaAlternativeButton>
+              );
+            })}
+        </View>
+      ) : roundType === 'range' ? (
+        <View>
+          <TextInput
+            style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+            onChangeText={(number) => setRangeValue(number)}
+            value={rangeValue}
+          />
+          <PrimaryButton onPress={() => handleAnswerButtonClicked(rangeValue)}>
+            <Text>Jag vill att du svarar</Text>
+          </PrimaryButton>
+        </View>
+      ) : null}
     </View>
-  ) : roundType === 'range' ? (
-    <View>
-      <Text>{question}</Text>
-      <TextInput
-        style={{height: 40, borderColor: 'gray', borderWidth: 1}}
-        onChangeText={(number) => setRangeValue(number)}
-        value={rangeValue}
-      />
-      <PrimaryButton onPress={() => handleAnswerButtonClicked(rangeValue)}>
-        <Text>Jag vill att du svarar</Text>
-      </PrimaryButton>
-    </View>
-  ) : null;
+  );
 };

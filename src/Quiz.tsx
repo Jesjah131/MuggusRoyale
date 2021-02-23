@@ -3,7 +3,6 @@ import React, {useEffect, useState} from 'react';
 import {View, Text, Button} from 'react-native';
 import '../protocol';
 import {PrimaryButton} from './components/Buttons';
-import {TriviaTimer} from './components/Timers';
 import {GameServer} from './entities/server/GameServer';
 import {
   MatchJoinedData,
@@ -176,7 +175,6 @@ export const Quiz = (props: {
       <Text>{content}</Text>
       <Text>{connected}</Text>
       <Text>{joined}</Text>
-      <TriviaTimer initialSeconds={RoundTime} />
       <Text>{`Poäng: ${score}`}</Text>
       {challengeActive && (
         <ChallengeHelper
